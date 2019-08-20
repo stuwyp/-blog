@@ -1,0 +1,76 @@
+@import "../../assets/base.less";
+.comments-title {
+  padding: 16px 0;
+  color: @themeLighterColor;
+  font-size: 30px;
+}
+
+.comments-create {
+  width: 100%;
+
+  .comments-input-item {
+    margin-bottom: 16px;
+  }
+}
+
+.comments-list {
+  width: 100%;
+  box-sizing: border-box;
+
+  .comments-item {
+    padding: 24px 0;
+    border-bottom: 1px solid #f0f0f0;
+
+  }
+
+  .comments-item-username {
+    font-size: 22px;
+    color: #409EFF;
+    font-weight: bold;
+  }
+
+  .comments-item-content {
+    box-sizing: border-box;
+    padding: 24px 24px 0 24px;
+    font-size: 16px;
+  }
+}
+
+.page {
+  padding: 32px 0;
+  text-align: center;
+}
+
+@media screen and (min-width: 200px) and (max-width: 768px) {
+  .comments-create {
+    width: 100%;
+  }
+}
+.comments-item-content {
+  width: 100%;
+  box-sizing: border-box;
+
+  & .v-note-wrapper .v-note-panel {
+    box-shadow: none !important;
+  }
+
+  & .v-note-wrapper .v-note-panel .v-note-show .v-show-content, .v-note-wrapper .v-note-panel .v-note-show .v-show-content-html {
+    background: #fff !important;
+  }
+
+  & .v-note-wrapper .v-note-panel .v-note-edit.divarea-wrapper .content-input-wrapper {
+    padding: 0 !important;
+  }
+
+  & .v-note-wrapper .v-note-panel .v-note-show .v-show-content, .v-note-wrapper .v-note-panel .v-note-show .v-show-content-html {
+    padding: 0 !important;
+  }
+
+  .markdown-body blockquote, .markdown-body dl, .markdown-body ol, .markdown-body p, .markdown-body pre, .markdown-body table, .markdown-body ul {
+    margin-bottom: 0 !important;
+  }
+
+  .markdown-body {
+    font-size: 18px !important;
+  }
+}
