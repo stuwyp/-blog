@@ -17,8 +17,9 @@ export default {
     onCreate() {
       blog.createBlog({title: this.title, content: this.content, description: this.description, atIndex: this.atIndex})
         .then(res => {
-          this.$message.success(res.msg)
-          this.$router.push({path: `/detail/${res.data.id}`})
+          console.log(res)
+          this.$message.success("创建成功")
+          this.$router.push({path: `/detail/${res.id}`})
         })
     },
     goBack: function () {

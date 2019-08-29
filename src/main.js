@@ -6,9 +6,10 @@ import router from "./router";
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 import store from './store'
-import Util from '@/helpers/util'
+import Date from '@/utils/date'
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
+import Router from 'vue-router'
 
 import {
   Button,
@@ -26,6 +27,12 @@ import {
   Tag,
   Icon
 } from 'element-ui';
+
+// 修复 多次点击标签出错 bug
+const routerPush = Router.prototype.push
+Router.prototype.push = function push(location) {
+  return routerPush.call(this, location).catch(error=> error)
+}
 
 Vue.use(Button);
 Vue.use(Input);
@@ -48,7 +55,7 @@ Vue.config.productionTip = false
 
 Vue.use(mavonEditor)
 Vue.use(ElementUI);
-Vue.use(Util)
+Vue.use(Date)
 
 
 

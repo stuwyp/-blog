@@ -1,7 +1,23 @@
+import { mapActions } from 'vuex'
+
 export default {
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      username: '',
+      email:'',
+      password: ''
+    }
+  },
+
+  methods: {
+    ...mapActions(['register']),
+
+    onRegister() {
+      this.register({username: this.username, password: this.password,email:this.email})
+        .then(()=>{
+          this.$message.success("注册成功")
+          this.$router.push({path: '/'})
+        })
     }
   }
 }

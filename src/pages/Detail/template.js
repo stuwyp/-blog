@@ -1,30 +1,36 @@
 import marked from 'marked'
 import blog from '@/api/blog'
-
-import {mapState, mapActions} from 'vuex'
+import comment from '@/api/comment'
 import VComments from '../Comment/template.vue'
 
 export default {
   components: {
     VComments
   },
-  data () {
+  data() {
     return {
+      blogId: null,
       title: '',
       rawContent: '',
       user: {},
-      createdAt: ''
+      createdAt: '',
+      blogComments: {}
     }
   },
 
   created() {
     this.blogId = this.$route.params.blogId
-    blog.getDetail({ blogId: this.blogId}).then(res => {
+    blog.getDetail({blogId: this.blogId}).then(res => {
       this.title = res.data.title
       this.rawContent = res.data.content
-      this.createdAt= res.data.created_at
+      this.createdAt = res.data.created_at
       this.user = res.data.user
     })
+
+    comment.getCommentsByBlogId({blogId: this.blogId}).then(res => {
+      this.blogComments = res.data
+    })
+
   },
 
   computed: {
@@ -32,21 +38,23 @@ export default {
       return marked(this.rawContent)
     }
   },
-  // method:{
-  //   ...mapActions({
-  //     getCommentsList: 'comments/getCommentsList',
-  //     createComments: 'comments/createComments'
-  //   }),
-  //   updateComments(newComments) {
-  //     // this.detail.comments_list.data.unshift(newComments);
-  //   },
-  //   // 切换评论页面
-  //   async changeCommentsPage(page) {
-  //     // const res = await this.getCommentsList({
-  //     //   article_id: this.id,
-  //     //   page
-  //     // });
-  //     // this.detail.comments_list = res.data.data;
-  //   },
-  // }
+
+  methods: {
+    async updateComments() {
+      const res = await comment.getCommentsByBlogId({
+        blogId: this.blogId
+      })
+      this.blogComments = res.data
+    },
+
+
+    // 切换评论页面
+    async changeCommentsPage(page) {
+      const res = await this.getCommentsByBlogId({
+        blogId: this.blogId,
+        page: page
+      });
+      this.detail.comments_list = res.data.data;
+    }
+  }
 }

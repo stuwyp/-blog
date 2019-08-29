@@ -1,13 +1,67 @@
 <template>
   <header>
-    <template>
-      <h1>My Blog</h1>
-      <div class="nav_right">
+
+    <router-link to="/" class="title">My Blog</router-link>
+    <div class="nav-left">
+      <el-input v-model="searchInput" placeholder="搜索内容"></el-input>
+    </div>
+    <template v-if="!isLogin">
+      <div class="nav-middle">
         <ul class="nav">
-          <li v-for="(item, index) in itemList" :key="index" @click="handleAClick(item.title)">
-            <router-link :to="item.url" :class="[(currentClick === item.title) ? 'aActive' :'aNormal']">{{item.title}}</router-link>
-          </li>
+          <el-menu
+            :default-active="activeIndex"
+            class="el-menu-demo"
+            background-color="#f9f9f9"
+            mode="horizontal"
+            @select="handleSelect">
+            <el-menu-item v-for="(item, index) in itemList" :index="index.toString()" :key="index">
+              {{item.title}}
+            </el-menu-item>
+          </el-menu>
         </ul>
+      </div>
+      <el-divider direction="vertical"></el-divider>
+      <div class="nav-right">
+        <router-link to="/login"><span class="login">登录</span></router-link>
+        <span style="padding: 5px">/</span>
+        <router-link to="/register"><span class="register">注册</span></router-link>
+      </div>
+    </template>
+    <template v-if="isLogin">
+      <div class="nav-middle">
+        <ul class="nav">
+          <el-menu
+            :default-active="activeIndex"
+            class="el-menu-demo"
+            background-color="#f9f9f9"
+            mode="horizontal"
+            @select="handleSelect">
+            <el-menu-item v-for="(item, index) in itemList" :index="index.toString()" :key="index">
+              {{item.title}}
+            </el-menu-item>
+          </el-menu>
+        </ul>
+      </div>
+      <div class="nav-right">
+        <el-dropdown>
+          <span class="el-dropdown-link me">
+            我的<i class="el-icon-arrow-down el-icon--right"></i>
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item>
+              <router-link to="/">草稿</router-link>
+            </el-dropdown-item>
+            <el-dropdown-item>
+              <router-link to="/">回收站</router-link>
+            </el-dropdown-item>
+            <el-dropdown-item divided>
+              <router-link to="/me">我的主页</router-link>
+            </el-dropdown-item>
+            <el-dropdown-item divided>
+              <a href="#" @click="onLogout">退出登录</a>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </div>
     </template>
   </header>
@@ -15,24 +69,64 @@
 
 
 <script>
+import auth from '@/api/auth'
+
+window.auth = auth
+import {mapGetters, mapActions} from 'vuex'
 
 export default {
   data() {
     return {
-      currentClick: '首页',
-      itemList: [
-        {title: '首页',url: '/'},
-        {title: '关于',url: '/about'},
-        {title: '标签',url: '/tag'},
-        {title: '分类',url: '/category'},
-        {title: '归档',url: '/archive'}
-      ],
+      activeIndex: '0',
+
+      searchInput: ''
     }
   },
+  computed: {
+    ...mapGetters([
+      'isLogin',
+      'user'
+    ]),
+    itemList() {
+      let list = []
+      if (this.isLogin) {
+         list = [
+           {title: '首页', url: '/'},
+           {title: '标签', url: '/tag'},
+           {title: '分类', url: '/category'},
+           {title: '通知', url: '/notification'},
+           {title: '写文章', url: '/create'},
+         ]
+      }
+      else {
+        list = [
+          {title: '首页', url: '/'},
+          {title: '写文章', url: '/create'},
+        ]
+      }
+      return list
+    }
+  },
+  created() {
+    this.checkLogin()
+  },
+
+
   methods: {
-    handleAClick: function (title) {
-      this.currentClick = title
+    ...mapActions([
+      'checkLogin',
+      'logout'
+    ]),
+
+    handleSelect(key, keyPath) {
+      this.$router.push(this.itemList[key].url)
     },
+    onLogout() {
+      this.logout()
+    },
+
+
+
   }
 }
 </script>
@@ -41,28 +135,16 @@ export default {
 
   @import "../assets/base.less";
 
-  .el-button {
-    background-color: white;
-  }
-
-
   header {
     display: flex;
     align-items: center;
     background: @bgColor;
 
-    h1 {
-      margin: 0;
-      padding: 0;
+    .title {
       color: #828282;
-      font-size: 26px;
+      font-size: 25px;
       font-weight: lighter;
       flex: 1;
-    }
-
-    .edit {
-      color: #fff;
-      font-size: 30px;
     }
 
     .avatar {
@@ -72,39 +154,29 @@ export default {
       border-radius: 50%;
       margin-left: 15px;
     }
-  }
+    .el-dropdown-link {
+      cursor: pointer;
+      color: #636363
+    }
 
-  .aActive {
-    color: #007fff;
-  }
+    .el-icon-arrow-down {
+      font-size: 12px;
+    }
 
-  .aNormal {
-    color: #71777c;
-  }
+    .nav-right {
+      margin-left: 1%;
 
-  .nav_right {
-    width: auto;
-    margin: auto;
-    height: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
-
-  .nav {
-    margin-left: 25px;
-    li {
-      width: 70px;
-      float: left;
-      list-style: none;
-      a {
-        display: block;
-        height: 60px;
-        line-height: 60px;
-        text-align: center;
-        text-decoration: none;
+      .me{
+        font-size: 16px;
+        margin-left: 5px;
       }
     }
+
+    .login, .register {
+      color: #868e8a;
+      font-size: 16px;
+    }
   }
+
 
 </style>

@@ -8,7 +8,11 @@
     </section>
     <section class="article" v-html="markdown"></section>
     <section>
-        <v-comments>
+        <v-comments
+          :blogId="blogId"
+          :blogComments ="blogComments"
+          @update="updateComments"
+          @changeCommentsPage="changeCommentsPage">
         </v-comments>
     </section>
   </div>

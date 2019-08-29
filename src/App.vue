@@ -28,14 +28,14 @@ export default {
 
   #app {
     display: grid;
-    grid-template-columns: 16% auto 16%;
+    grid-template-columns: 12% auto 12%;
     grid-template-rows: auto 1fr auto;
     grid-template-areas: "header header header" "left main right" "footer footer footer";
 
     #header {
       grid-area: header;
-      padding-left: 16%;
-      padding-right: 16%;
+      padding-left: 12%;
+      padding-right: 12%;
     }
 
     #main {
@@ -50,8 +50,8 @@ export default {
 
     #footer {
       grid-area: footer;
-      padding-left: 16%;
-      padding-right: 16%;
+      padding-left: 12%;
+      padding-right: 12%;
     }
     #left, #right, #main {
       background-color: #fbfbfb;

@@ -2,12 +2,18 @@ import auth from '@/api/auth'
 
 const state = {
   user: null,
-  isLogin: false
+  isLogin: false,
+  token: ''
 }
 
 const getters = {
   user: state => state.user,
-  isLogin: state => state.isLogin
+  isLogin: state => state.isLogin,
+  token: state => {
+    if (state.token === '')
+      state.token = window.localStorage.getItem('jwt_token');
+    return state.token
+  }
 }
 
 const mutations = {
@@ -17,46 +23,62 @@ const mutations = {
 
   setLogin(state, payload) {
     state.isLogin = payload.isLogin
+  },
+
+  setToken(state, payload) {
+    window.localStorage.setItem('jwt_token', payload.token);
+    state.token = payload.token
   }
 }
 
 const actions = {
-  login({ commit }, { username, password }) {
-    return auth.login({ username, password })
+  login({commit}, {username, password}) {
+    return auth.login({username, password})
       .then(res => {
-        commit('setUser', { user: res.data })
-        commit('setLogin', { isLogin: true })
+        console.log("data ", res)
+        commit('setUser', {user: res.data})
+        commit('setLogin', {isLogin: true})
+        commit('setToken', {token: res.token})
+        console.log("Set ", state.isLogin, state.user, state.token)
       })
   },
 
-  async register({ commit }, { username, password }) {
-    let res = await auth.register({ username, password })
-    commit('setUser', { user: res.data })
-    commit('setLogin', { isLogin: true })
-    return res.data
+  async register({commit}, {username, password, email}) {
+    await auth.register({username, password, email})
+    return auth.login({username, password})
+      .then(res => {
+        console.log("data ", res)
+        commit('setUser', {user: res.data})
+        commit('setLogin', {isLogin: true})
+        commit('setToken', {token: res.token})
+        console.log("Set ", state.isLogin, state.user, state.token)
+      })
   },
 
-  async logout({ commit }) {
-    await auth.logout()
-    commit('setUser', { user: null })
-    commit('setLogin', { isLogin: false })
+  logout({commit}) {
+    commit('setUser', {user: null})
+    commit('setLogin', {isLogin: false})
+    commit('setToken', {token: ''})
   },
 
-  async checkLogin({ commit, state}) {
+  async checkLogin({commit, state}) {
+    console.log("checking")
     if(state.isLogin) return true
-    let res = await auth.getInfo()
-    commit('setLogin', { isLogin: res.isLogin })
-    if(!res.isLogin) return false
-    commit('setUser', { user: res.data })
-    return true
+
+    try {
+      let res = await auth.getInfo()
+      console.log("auth res",res)
+      commit('setLogin', {isLogin: res.isLogin})
+      if (!res.isLogin) return false
+      commit('setUser', {user: res.data})
+      return true
+    }
+    catch (err) {
+      console.log(err)
+      return false
+    }
+
   }
-
-  /*
-    this.logout().then(isLogin=>{
-    
-    })
-
-  */
 }
 
 export default {

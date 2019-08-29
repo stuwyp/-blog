@@ -75,12 +75,12 @@ const router =  new Router({
     {
       path: '/edit/:blogId',
       component: () => import('@/pages/Edit/template.vue'),
-      // meta: { requiresAuth: true }
+      meta: { requiresAuth: true }
     },
     {
       path: '/create',
       component: () => import('@/pages/Create/template.vue'),
-      // meta: { requiresAuth: true }
+      meta: { requiresAuth: true }
     },
     {
       path: '/user/:userId',
@@ -89,15 +89,11 @@ const router =  new Router({
     {
       path: '/my',
       component: () => import('@/pages/My/template.vue'),
-      // meta: { requiresAuth: true }
+      meta: { requiresAuth: true }
     },
     {
       path: '/register',
       component: () => import('@/pages/Register/template.vue')
-    },
-    {
-      path: '/about',
-      component: () => import('@/pages/About/template.vue'),
     },
     {
       path: '/category',

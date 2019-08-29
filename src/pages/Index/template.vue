@@ -12,8 +12,10 @@
       </section>
     </section>
     <el-pagination
+      v-if="pageCount>1"
       layout="prev, pager, next"
       :total="total"
+      :page-count="pageCount"
       :current-page="page"
       @current-change="onPageChange">
     </el-pagination>

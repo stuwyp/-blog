@@ -1,9 +1,6 @@
 <template>
   <div id="edit">
     <h2>创建文章</h2>
-    <div class="return_button">
-      <el-button icon="arrow-left" size="small" @click="goBack">返回</el-button>
-    </div>
     <h4>文章标题</h4>
     <el-input v-model="title" placeholder="请输入标题" ></el-input>
     <p class="msg">限XXX个字</p>
@@ -42,6 +39,8 @@
       <!--<el-switch v-model="atIndex" active-color="#13ce66" inactive-color="#ff4949"></el-switch>-->
     <!--</p>-->
     <el-button @click="onCreate">确定</el-button>
+    <el-button @click="goBack">返回</el-button>
+
   </div>
 </template>
 

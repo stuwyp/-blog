@@ -21,7 +21,8 @@
     text-align: center;
     text-decoration: none;
   }
-  .a-right{
+
+  .a-right {
     text-align: center;
     width: 50%;
     float: right;
