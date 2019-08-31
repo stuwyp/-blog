@@ -16,7 +16,7 @@ export default {
 
   created() {
     this.blogId = this.$route.params.blogId
-    blog.getDetail({ blogId: this.blogId }).then(res => {
+    blog.getBlogDetail({ blogId: this.blogId }).then(res => {
       this.title = res.data.title
       this.description = res.data.description
       this.content = res.data.content
@@ -29,7 +29,7 @@ export default {
       blog.updateBlog({ blogId: this.blogId }, { title: this.title, content: this.content, description: this.description, atIndex: this.atIndex})
         .then(res => {
           this.$message.success(res.msg)
-          this.$router.push({ path: `/detail/${res.data.id}`})
+          this.$router.push({ path: `/blog/${res.data.id}`})
         })
     },
     goBack: function () {

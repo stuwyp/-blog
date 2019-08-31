@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 const URL = {
   GET_LIST: '/comment',
-  GET_DETAIL: '/comment/:commentId',
+  GET_COMMENT_DETAIL: '/comment/:commentId',
   CREATE: '/comment',
   UPDATE: '/comment/:commentId',
   DELETE: '/comment/:commentId',
@@ -19,12 +19,12 @@ export default {
     return request(URL.GET_LIST_BY_USER.replace(':userId', userId), 'GET', {page})
   },
 
-  getDetail({commentId}) {
-    return request(URL.GET_DETAIL.replace(':commentId', commentId))
+  getCommentDetail({commentId}) {
+    return request(URL.GET_COMMENT_DETAIL.replace(':commentId', commentId))
   },
 
   createComment({content, blog_id, user_id}) {
-    console.log(content, blog_id, user_id)
+    // console.log(content, blog_id, user_id)
     return request(URL.CREATE, 'POST', {content, blog_id, user_id})
   }
 }

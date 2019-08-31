@@ -18,14 +18,19 @@
             </el-card>
           </el-timeline-item>
           <el-timeline-item
-            v-if="blogs.length === 0"
+            v-else
             :timestamp="friendlyDate(new Date())"
             placement="top">
             <el-card>
-              <router-link to="/create">
-                <i class="el-icon-edit"></i>
-                <span style="padding: 0 10px">新建博客</span>
-              </router-link>
+              暂无文章
+            </el-card>
+          </el-timeline-item>
+          <el-timeline-item
+            v-else
+            :timestamp="friendlyDate(new Date())"
+            placement="top">
+            <el-card>
+              <router-link to="/create">开始我的第一篇博客</router-link>
             </el-card>
           </el-timeline-item>
         </el-timeline>
@@ -50,7 +55,7 @@
           class="tag-item"
           v-for="item in tagList"
           :key="item.name"
-          @click="getBlogsByFilter(item.id)"
+          @click="getBlogsByTags(item.id)"
           plain
         >
           {{ item.name }}

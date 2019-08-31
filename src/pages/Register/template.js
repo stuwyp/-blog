@@ -18,6 +18,9 @@ export default {
           this.$message.success("注册成功")
           this.$router.push({path: '/'})
         })
+        .catch(()=>{
+          this.$message.error("注册失败")
+        })
     }
   }
 }

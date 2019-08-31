@@ -32,12 +32,14 @@
     <el-input  v-model="description" placeholder="请输入简介"></el-input>
     <p class="msg">限XXX个字</p>
     <h4>文章内容 (Markdown编辑器)</h4>
-    <el-input type="textarea" v-model="content"   :autosize="{ minRows: 8, maxRows: 40}"></el-input>
-    <p class="msg">限XXX个字</p>
-    <!--<p>-->
-      <!--<label>是否展示到首页</label>-->
-      <!--<el-switch v-model="atIndex" active-color="#13ce66" inactive-color="#ff4949"></el-switch>-->
-    <!--</p>-->
+    <mavon-editor
+      class="mavon-editor--box"
+      v-model="content"
+      :autofocus="false"
+      placeholder="博客内容"
+      :ishljs="true">
+    </mavon-editor>
+
     <el-button @click="onCreate">确定</el-button>
     <el-button @click="goBack">返回</el-button>
 

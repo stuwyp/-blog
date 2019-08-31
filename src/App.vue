@@ -1,8 +1,10 @@
 <template>
-  <div id="app">
+  <div id="app" style="overflow: auto">
     <Header id="header"></Header>
     <div id="main">
       <router-view></router-view>
+      <el-backtop target="#app">
+      </el-backtop>
     </div>
     <div id="left"></div>
     <div id="right"></div>
@@ -28,14 +30,14 @@ export default {
 
   #app {
     display: grid;
-    grid-template-columns: 12% auto 12%;
+    grid-template-columns: 10% auto 10%;
     grid-template-rows: auto 1fr auto;
     grid-template-areas: "header header header" "left main right" "footer footer footer";
 
     #header {
       grid-area: header;
-      padding-left: 12%;
-      padding-right: 12%;
+      padding-left: 10%;
+      padding-right: 10%;
     }
 
     #main {
@@ -50,8 +52,8 @@ export default {
 
     #footer {
       grid-area: footer;
-      padding-left: 12%;
-      padding-right: 12%;
+      padding-left: 10%;
+      padding-right: 10%;
     }
     #left, #right, #main {
       background-color: #fbfbfb;

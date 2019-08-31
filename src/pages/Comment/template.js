@@ -66,7 +66,7 @@ export default {
 
     // 创建评论
     async createBlogComment() {
-      console.log(this.isLogin)
+      // console.log(this.isLogin)
       if (!this.isLogin) {
         this.showMessage('需要登录后才能评论', 'warning')
         return
@@ -74,7 +74,7 @@ export default {
 
       let {content} = this.ruleForm;
       try {
-        console.log(this.user)
+        // console.log(this.user)
         const res = await comment.createComment({
           content,
           blog_id: this.blogId,

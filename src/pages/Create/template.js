@@ -1,4 +1,5 @@
 import blog from '@/api/blog'
+import {mapGetters} from 'vuex'
 
 export default {
   data() {
@@ -12,14 +13,25 @@ export default {
       inputValue: '',
     }
   },
-
+  computed: {
+    ...mapGetters([
+      'user'
+    ])
+  },
   methods: {
+
     onCreate() {
-      blog.createBlog({title: this.title, content: this.content, description: this.description, atIndex: this.atIndex})
+      blog.createBlog({
+        title: this.title,
+        content: this.content,
+        description: this.description,
+        user_id: this.user.id,
+        tags: this.labels
+      })
         .then(res => {
-          console.log(res)
+          // console.log(res)
           this.$message.success("创建成功")
-          this.$router.push({path: `/detail/${res.id}`})
+          this.$router.push({path: `/blog/${res.id}`})
         })
     },
     goBack: function () {
@@ -31,7 +43,12 @@ export default {
     },
     handleInputConfirm: function () {
       let inputValue = this.inputValue
-      if (inputValue) this.labels.push(inputValue)
+      if (inputValue) {
+        if (this.labels.indexOf(this.inputValue) === -1)
+          this.labels.push(inputValue)
+        else
+          this.$message.warning("标签不能重复")
+      }
       this.inputVisible = false
       this.inputValue = ''
     },

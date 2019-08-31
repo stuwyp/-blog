@@ -1,6 +1,5 @@
 import blog from '@/api/blog.js'
 import tag from '@/api/tag.js'
-import {mapGetters} from 'vuex'
 
 export default {
   data() {
@@ -14,38 +13,36 @@ export default {
       sortBy: 'time'
     }
   },
-  computed: {
-    ...mapGetters([
-      'user'
-    ])
-  },
   created() {
     this.page = parseInt(this.$route.query.page) || 1
-    this.getBlogsByFilter(this.filterTags)
-    this.getTags()
+    blog.getBlogs({page: this.page, sortBy: this.sortBy}).then(res => {
+      console.log(res)
+      this.blogs = res.data
+      this.total = res.total
+      this.page = res.page
+      this.pageCount = res.pageCount
+    })
+    tag.getTags().then(res => {
+      this.tagList = res.data
+    })
   },
   methods: {
     onPageChange(newPage) {
-      blog.getBlogsByUserId({userId: this.user.id, page: newPage}).then(res => {
+      blog.getBlogs({page: newPage}).then(res => {
         this.blogs = res.data
         this.total = res.total
         this.page = res.page
-        this.$router.push({path: '/archive/', query: {page: newPage}})
+        this.$router.push({path: '/', query: {page: newPage}})
       })
     },
 
-    getBlogsByFilter(tag_id = []) {
-      blog.getBlogsByUserId({userId: this.user.id, page: this.page, sortBy: this.sortBy, tag: tag_id}).then(res => {
+    getBlogsByTags(tag_id){
+
+      blog.getBlogs({page: this.page, sortBy: this.sortBy, tag: tag_id}).then(res => {
         this.blogs = res.data
         this.total = res.total
         this.page = res.page
         this.pageCount = res.pageCount
-      })
-    },
-
-    getTags() {
-      tag.getTags().then(res => {
-        this.tagList = res.data
       })
     }
   }

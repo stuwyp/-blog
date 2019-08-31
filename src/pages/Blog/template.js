@@ -20,7 +20,7 @@ export default {
 
   created() {
     this.blogId = this.$route.params.blogId
-    blog.getDetail({blogId: this.blogId}).then(res => {
+    blog.getBlogDetail({blogId: this.blogId}).then(res => {
       this.title = res.data.title
       this.rawContent = res.data.content
       this.createdAt = res.data.created_at

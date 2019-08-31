@@ -22,7 +22,7 @@ service.interceptors.request.use(
     if (store.getters.token) {
       config.headers.Authorization = 'Bearer ' + store.getters.token // 让每个请求携带自定义token 请根据实际情况自行修改
     }
-    console.log(config.headers)
+    // console.log(config.headers)
     return config
   },
   error => {
@@ -37,9 +37,9 @@ service.interceptors.response.use(
      * code为非20000是抛错 可结合自己业务进行修改
      */
     const res = response.data
-    console.log("res ",res)
+    // console.log("res ",res)
     if (res.code >= 30000) {
-      console.log(res.msg)
+      // console.log(res.msg)
       Message({
         message: res.msg,
         type: 'error',

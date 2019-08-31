@@ -1,58 +1,56 @@
 <template>
   <header>
-
     <router-link to="/" class="title">My Blog</router-link>
+
     <div class="nav-left">
-      <el-input v-model="searchInput" placeholder="搜索内容"></el-input>
+      <el-input
+        v-model="searchInput"
+        clearable
+        placeholder="搜索内容"
+        @keyup.enter.native="onEnterSearch"
+        suffix-icon="el-icon-search"></el-input>
     </div>
+    <div class="nav-middle">
+      <ul class="nav">
+        <el-menu
+          ref="'menu"
+          :default-active="activeIndex"
+          class="el-menu-demo"
+          background-color="#fff"
+          mode="horizontal"
+          style="border-bottom:0"
+          @select="handleSelect">
+          <el-menu-item v-show="index>0" v-for="(item, index) in itemList" :index="item.url" :key="index">
+            {{item.title}}
+          </el-menu-item>
+        </el-menu>
+      </ul>
+    </div>
+
     <template v-if="!isLogin">
-      <div class="nav-middle">
-        <ul class="nav">
-          <el-menu
-            :default-active="activeIndex"
-            class="el-menu-demo"
-            background-color="#f9f9f9"
-            mode="horizontal"
-            @select="handleSelect">
-            <el-menu-item v-for="(item, index) in itemList" :index="index.toString()" :key="index">
-              {{item.title}}
-            </el-menu-item>
-          </el-menu>
-        </ul>
-      </div>
-      <el-divider direction="vertical"></el-divider>
       <div class="nav-right">
         <router-link to="/login"><span class="login">登录</span></router-link>
-        <span style="padding: 5px">/</span>
+        <span style="padding: 3px">/</span>
         <router-link to="/register"><span class="register">注册</span></router-link>
       </div>
     </template>
+
     <template v-if="isLogin">
-      <div class="nav-middle">
-        <ul class="nav">
-          <el-menu
-            :default-active="activeIndex"
-            class="el-menu-demo"
-            background-color="#f9f9f9"
-            mode="horizontal"
-            @select="handleSelect">
-            <el-menu-item v-for="(item, index) in itemList" :index="index.toString()" :key="index">
-              {{item.title}}
-            </el-menu-item>
-          </el-menu>
-        </ul>
-      </div>
       <div class="nav-right">
-        <el-dropdown>
+        <el-button type="mini" class="nav-icon notification" @click="getNotification">
+          <i class="iconfont  icon-tongzhi" style="font-size: 20px;"></i>
+        </el-button>
+
+        <el-dropdown class="nav-icon">
           <span class="el-dropdown-link me">
-            我的<i class="el-icon-arrow-down el-icon--right"></i>
+            <i class="el-icon-user" style="font-size: 20px;"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item>
-              <router-link to="/">草稿</router-link>
+              <router-link to="/draft">草稿</router-link>
             </el-dropdown-item>
             <el-dropdown-item>
-              <router-link to="/">回收站</router-link>
+              <router-link to="/recycle_bin">回收站</router-link>
             </el-dropdown-item>
             <el-dropdown-item divided>
               <router-link to="/me">我的主页</router-link>
@@ -62,14 +60,17 @@
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
+
       </div>
     </template>
+
   </header>
 </template>
 
 
 <script>
 import auth from '@/api/auth'
+import utils from '@/api/utils'
 
 window.auth = auth
 import {mapGetters, mapActions} from 'vuex'
@@ -77,9 +78,13 @@ import {mapGetters, mapActions} from 'vuex'
 export default {
   data() {
     return {
-      activeIndex: '0',
-
-      searchInput: ''
+      searchInput: '',
+      itemList: [
+        {title: '', url: ''},
+        {title: '首页', url: '/'},
+        {title: '我的文章', url: '/archive'},
+        {title: '写文章', url: '/create'},
+      ]
     }
   },
   computed: {
@@ -87,24 +92,14 @@ export default {
       'isLogin',
       'user'
     ]),
-    itemList() {
-      let list = []
-      if (this.isLogin) {
-         list = [
-           {title: '首页', url: '/'},
-           {title: '标签', url: '/tag'},
-           {title: '分类', url: '/category'},
-           {title: '通知', url: '/notification'},
-           {title: '写文章', url: '/create'},
-         ]
+
+
+    activeIndex() {
+      for (let i of this.itemList.slice(1)) {
+        if (this.$route.path === i.url)
+          return this.$route.path
       }
-      else {
-        list = [
-          {title: '首页', url: '/'},
-          {title: '写文章', url: '/create'},
-        ]
-      }
-      return list
+      return ''
     }
   },
   created() {
@@ -118,14 +113,22 @@ export default {
       'logout'
     ]),
 
-    handleSelect(key, keyPath) {
-      this.$router.push(this.itemList[key].url)
+    handleSelect(url) {
+      if (url !== '')
+        this.$router.push(url)
+    },
+    async onEnterSearch() {
+      let result = await utils.globalSearch(this.searchInput)
+
     },
     onLogout() {
       this.logout()
+      this.$router.push({path: '/'})
     },
 
-
+    getNotification() {
+      this.$router.push({path: '/notification'})
+    }
 
   }
 }
@@ -134,17 +137,21 @@ export default {
 <style lang="less">
 
   @import "../assets/base.less";
+  @import "http://at.alicdn.com/t/font_1377453_livkfs5l37.css";
 
   header {
     display: flex;
     align-items: center;
-    background: @bgColor;
+    background: #fff;
+    border-bottom: 1px solid #efefef;
 
     .title {
       color: #828282;
       font-size: 25px;
       font-weight: lighter;
       flex: 1;
+      margin-left: 2%;
+      cursor: default;
     }
 
     .avatar {
@@ -163,12 +170,23 @@ export default {
       font-size: 12px;
     }
 
+    .nav {
+      margin: 0;
+    }
+
+    .nav-icon {
+      cursor: pointer;
+    }
+    .notification {
+      border: 0;
+      padding: 10px;
+
+    }
     .nav-right {
       margin-left: 1%;
-
-      .me{
+      .me {
         font-size: 16px;
-        margin-left: 5px;
+        padding: 10px;
       }
     }
 
@@ -176,7 +194,9 @@ export default {
       color: #868e8a;
       font-size: 16px;
     }
+
   }
 
 
 </style>
+

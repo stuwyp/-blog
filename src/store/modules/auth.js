@@ -35,11 +35,11 @@ const actions = {
   login({commit}, {username, password}) {
     return auth.login({username, password})
       .then(res => {
-        console.log("data ", res)
+        // console.log("data ", res)
         commit('setUser', {user: res.data})
         commit('setLogin', {isLogin: true})
         commit('setToken', {token: res.token})
-        console.log("Set ", state.isLogin, state.user, state.token)
+        // console.log("Set ", state.isLogin, state.user, state.token)
       })
   },
 
@@ -47,11 +47,11 @@ const actions = {
     await auth.register({username, password, email})
     return auth.login({username, password})
       .then(res => {
-        console.log("data ", res)
+        // console.log("data ", res)
         commit('setUser', {user: res.data})
         commit('setLogin', {isLogin: true})
         commit('setToken', {token: res.token})
-        console.log("Set ", state.isLogin, state.user, state.token)
+        // console.log("Set ", state.isLogin, state.user, state.token)
       })
   },
 
@@ -62,12 +62,12 @@ const actions = {
   },
 
   async checkLogin({commit, state}) {
-    console.log("checking")
+    // console.log("checking")
     if(state.isLogin) return true
 
     try {
       let res = await auth.getInfo()
-      console.log("auth res",res)
+      // console.log("auth res",res)
       commit('setLogin', {isLogin: res.isLogin})
       if (!res.isLogin) return false
       commit('setUser', {user: res.data})
