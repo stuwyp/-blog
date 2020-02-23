@@ -40,8 +40,8 @@
       :ishljs="true">
     </mavon-editor>
 
-    <el-button @click="onCreate">确定</el-button>
-    <el-button @click="goBack">返回</el-button>
+    <el-button class='btn' @click="onCreate">确定</el-button>
+    <el-button class='btn'  @click="goBack">返回</el-button>
 
   </div>
 </template>

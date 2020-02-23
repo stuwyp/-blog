@@ -10,7 +10,6 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "css-loader": "^0.28.11",
     "js-cookie": "^2.2.1",
     "marked": "^0.7.0",
     "mavon-editor": "^2.7.5",

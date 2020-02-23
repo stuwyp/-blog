@@ -27,7 +27,6 @@ export default {
         this.$router.push({path: '/', query: {page: newPage}})
       })
     },
-
     getBlogsByFilter(tag_id = []) {
       blog.getBlogs({page: this.page, sortBy: this.sortBy, tag: tag_id}).then(res => {
         console.log(res)
@@ -42,6 +41,5 @@ export default {
         this.tagList = res.data
       })
     }
-
   }
 }
