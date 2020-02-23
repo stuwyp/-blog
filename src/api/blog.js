@@ -7,6 +7,7 @@ const URL = {
   UPDATE: '/blog/:blogId',
   DELETE: '/blog/:blogId',
   GET_USER_BLOGS: '/user/:userId/blogs',
+  GET_USER_RECYCLE_BLOGS: '/user/:userId/recycle_blogs',
 }
 
 export default {
@@ -16,6 +17,10 @@ export default {
 
   getBlogsByUserId({userId, tag = [], page = 1}) {
     return request(URL.GET_USER_BLOGS.replace(':userId', userId), 'GET', {page, tag})
+  },
+
+  getRecycleBlogsByUserId({userId, tag = [], page = 1}) {
+    return request(URL.GET_USER_RECYCLE_BLOGS.replace(':userId', userId), 'GET', {page, tag})
   },
 
   getBlogDetail({blogId}) {
