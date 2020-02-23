@@ -1,8 +1,6 @@
 @import "../../assets/base.less";
 
 #index {
-  display: grid;
-  grid-template-columns: 1fr 27%;
   margin: 20px 0;
   background-color: @bgColor;
 
@@ -22,9 +20,8 @@
   }
 
   #left-blogs {
-    grid-column: 1;
-    grid-row: 1;
-    margin-right: 2%;
+
+    margin: 0 16%;
 
     .el-timeline{
       padding-left: 20px;
@@ -50,48 +47,6 @@
     }
   }
 
-  #right-nav {
-    grid-column: 2;
-    grid-row: 1;
-
-    margin: 22px 8% ;
-    background-color: #fff;
-    box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
-    border-radius: 3px;
-
-    height: 500px;
-
-    .right-nav-top {
-      background-color: #fff;
-      padding: 12px 6px;
-      margin: 0 5%;
-      border-bottom: 1px solid #efefef;
-      color: @textLighterColor;
-    }
-
-    .right-tags {
-      margin: 0 10px;
-      .el-button{
-        color: #999;
-        :hover,:active{
-          color: #2dc1c2;
-        }
-      }
-      .tag-item {
-        cursor: pointer;
-        margin: 10px 8px;
-        padding:10px 8px;
-        border-radius: 3px;
-        border: 0;
-        font-size: 18px;
-
-      }
-    }
-
-  }
-  //p {
-  //  padding-bottom: 20px;
-  //}
 }
 
 
