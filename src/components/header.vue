@@ -8,7 +8,7 @@
         clearable
         placeholder="搜索内容"
         @keyup.enter.native="onEnterSearch"
-        suffix-icon="el-icon-search"></el-input>
+        prefix-icon="el-icon-search"></el-input>
     </div>
     <div class="nav-middle">
       <ul class="nav">
@@ -118,8 +118,9 @@ export default {
         this.$router.push(url)
     },
     async onEnterSearch() {
+      console.log(this.searchInput)
       let result = await utils.globalSearch(this.searchInput)
-
+      console.log(result)
     },
     onLogout() {
       this.logout()

@@ -3,9 +3,10 @@ import {Message, MessageBox} from 'element-ui'
 import store from "../store"
 import Qs from 'qs'
 
-axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded'
 axios.defaults.baseURL = 'http://localhost:9000'
+// axios.defaults.baseURL = '/api'
 axios.defaults.withCredentials = true
+axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded'
 
 const service = axios.create({
   timeout: 20000, // 请求超时时间
