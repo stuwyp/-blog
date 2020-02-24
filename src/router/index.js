@@ -1,15 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-/*
-import Index from '@/pages/Index/template.vue'
-import Login from '@/pages/Login/template.vue'
-import Blog from '@/pages/Blog/template.vue'
-import Edit from '@/pages/Edit/template.vue'
-import Create from '@/pages/Create/template.vue'
-import Register from '@/pages/Register/template.vue'
-import User from '@/pages/User/template.vue'
-import My from '@/pages/My/template.vue'
-*/
+
 
 import store from '../store'
 window.store = store
@@ -21,57 +12,57 @@ const router =  new Router({
   routes: [
     {
       path: '/',
-      component: () => import('@/pages/Index/template.vue')
+      component: () => import('@/pages/index.vue')
     },
     {
       path: '/login',
-      component: () => import('@/pages/Login/template.vue')
+      component: () => import('@/pages/login.vue')
     },
     {
       path: '/register',
-      component: () => import('@/pages/Register/template.vue')
+      component: () => import('@/pages/register.vue')
     },
     {
       path: '/blog/:blogId',
-      component: () => import('@/pages/Blog/template.vue')
+      component: () => import('@/pages/blog.vue')
     },
     {
       path: '/edit/:blogId',
-      component: () => import('@/pages/Edit/template.vue'),
+      component: () => import('@/pages/edit.vue'),
       meta: { requiresAuth: true }
     },
     {
       path: '/create',
-      component: () => import('@/pages/Create/template.vue'),
+      component: () => import('@/pages/create.vue'),
       meta: { requiresAuth: true }
     },
     {
       path: '/user/:userId',
-      component: () => import('@/pages/User/template.vue')
+      component: () => import('@/pages/user.vue')
     },
     {
       path: '/my',
-      component: () => import('@/pages/My/template.vue'),
+      component: () => import('@/pages/my.vue'),
       meta: { requiresAuth: true }
     },
     {
       path: '/notification',
-      component: () => import('@/pages/Notification/template.vue'),
+      component: () => import('@/pages/notification.vue'),
       meta: { requiresAuth: true }
     },
     {
       path: '/archive',
-      component: () => import('@/pages/Archive/template.vue'),
+      component: () => import('@/pages/archive.vue'),
       meta: { requiresAuth: true }
     },
     {
       path: '/draft',
-      component: () => import('@/pages/Draft/template.vue'),
+      component: () => import('@/pages/draft.vue'),
       meta: { requiresAuth: true }
     },
     {
       path: '/recycle_bin',
-      component: () => import('@/pages/RecycleBin/template.vue'),
+      component: () => import('@/pages/recycleBin.vue'),
       meta: { requiresAuth: true }
     },
   ]
