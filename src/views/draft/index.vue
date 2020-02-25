@@ -121,7 +121,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-  @import "../assets/base.less";
+  @import "../../assets/base.less";
 
   #index {
     display: grid;

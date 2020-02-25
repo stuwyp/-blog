@@ -1,19 +1,21 @@
 <template>
   <div id="index">
     <section id="left-blogs">
-      <div class="block">
-        <el-timeline>
-          <el-timeline-item
-            v-for="(item, index) in blogs"
-            :key="index"
-            type="primary"
-            size="large"
-            :timestamp="friendlyDate(item.updated_at)">
-            {{item.content}}
-          </el-timeline-item>
-        </el-timeline>
+      <div class="item">
+        <span class="blog-sort">热门</span>
+        <span class="blog-sort">最新</span>
       </div>
+      <router-link class="blog-item" v-for="blog in blogs" :key="blog.id" :to="`/blog/${blog.id}`">
+        <div class="item">
+          <h3>{{blog.title}}</h3>
+          <div>{{blog.description}}</div>
+          <span v-if="blog.tags.length > 0" v-for="tag in blog.tags">{{tag.name}}</span>
 
+          <div> {{friendlyDate(blog.created_at)}}</div>
+          <div class=""></div>
+        </div>
+
+      </router-link>
       <el-pagination
         v-if="pageCount>1"
         layout="prev, pager, next"
@@ -25,11 +27,20 @@
 
     </section>
     <section id="right-nav">
-      <div class="right-nav-top">XXX</div>
+      <div class="right-nav-top">热门标签</div>
 
 
       <div class="right-tags">
-
+        <el-button
+          type="text"
+          class="tag-item"
+          v-for="item in tagList"
+          :key="item.name"
+          @click="getBlogsByFilter(item.id)"
+          plain
+        >
+          {{ item.name }}
+        </el-button>
       </div>
 
     </section>
@@ -48,23 +59,15 @@ export default {
       total: 0,
       page: 1,
       pageCount: 0,
+      sortBy: 'updated_at',
       tagList: [],
       filterTags: [],
-      sortBy: 'time'
     }
   },
   created() {
     this.page = parseInt(this.$route.query.page) || 1
-    blog.getBlogs({page: this.page, sortBy: this.sortBy}).then(res => {
-      console.log(res)
-      this.blogs = res.data
-      this.total = res.total
-      this.page = res.page
-      this.pageCount = res.pageCount
-    })
-    tag.getTags().then(res => {
-      this.tagList = res.data
-    })
+    this.getBlogsByFilter(this.filterTags)
+    this.getTags()
   },
   methods: {
     onPageChange(newPage) {
@@ -75,14 +78,18 @@ export default {
         this.$router.push({path: '/', query: {page: newPage}})
       })
     },
-
-    getBlogsByTags(tag_id) {
-
+    getBlogsByFilter(tag_id = []) {
       blog.getBlogs({page: this.page, sortBy: this.sortBy, tag: tag_id}).then(res => {
+        console.log(res)
         this.blogs = res.data
         this.total = res.total
         this.page = res.page
         this.pageCount = res.pageCount
+      })
+    },
+    getTags() {
+      tag.getTags().then(res => {
+        this.tagList = res.data
       })
     }
   }
@@ -91,7 +98,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-  @import "../assets/base.less";
+  @import "../../assets/base.less";
 
   #index {
     display: grid;
@@ -117,11 +124,9 @@ export default {
     #left-blogs {
       grid-column: 1;
       grid-row: 1;
-      margin: 20px 2%;
-
-      .el-timeline {
-        padding-left: 20px;
-      }
+      margin: 22px 2%;
+      box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
+      border-radius: 3px;
 
       .item {
         background-color: #fff;
@@ -141,13 +146,32 @@ export default {
       .blog-item :hover {
         background-color: #efefef;
       }
+      //.avatar {
+      //  grid-column: 1;
+      //  grid-row: 1 / span 2;
+      //  justify-self: center;
+      //  margin-left: 0;
+      //  text-align: center;
+      //
+      //  img {
+      //    width: 60px;
+      //    height: 60px;
+      //    border-radius: 50%;
+      //  }
+      //
+      //  figcaption {
+      //    font-size: 12px;
+      //    color: @textLighterColor;
+      //  }
+      //}
+
     }
 
     #right-nav {
       grid-column: 2;
       grid-row: 1;
 
-      margin: 22px 8%;
+      margin: 22px 6%;
       background-color: #fff;
       box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
       border-radius: 3px;

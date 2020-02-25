@@ -1,21 +1,35 @@
 <template>
   <div id="index">
     <section id="left-blogs">
-      <div class="item">
-        <span class="blog-sort">热门</span>
-        <span class="blog-sort">最新</span>
+      <div class="block">
+        <el-timeline>
+          <el-timeline-item
+            v-if="blogs.length > 0"
+            v-for="blog in blogs"
+            :key="blog.id"
+            :timestamp="friendlyDate(blog.updated_at)"
+            placement="top">
+            <el-card>
+              <router-link :to="`/blog/${blog.id}`">
+                <h3>{{blog.title}}</h3>
+                <div>{{blog.description}}</div>
+                <span v-if="blog.tags.length > 0" v-for="tag in blog.tags">{{tag.name}}</span>
+              </router-link>
+            </el-card>
+          </el-timeline-item>
+          <el-timeline-item
+            v-if="blogs.length === 0"
+            :timestamp="friendlyDate(new Date())"
+            placement="top">
+            <el-card>
+              <router-link to="/create">
+                <i class="el-icon-edit"></i>
+                <span style="padding: 0 10px">新建博客</span>
+              </router-link>
+            </el-card>
+          </el-timeline-item>
+        </el-timeline>
       </div>
-      <router-link class="blog-item" v-for="blog in blogs" :key="blog.id" :to="`/blog/${blog.id}`">
-        <div class="item">
-          <h3>{{blog.title}}</h3>
-          <div>{{blog.description}}</div>
-          <span v-if="blog.tags.length > 0" v-for="tag in blog.tags">{{tag.name}}</span>
-
-          <div> {{friendlyDate(blog.created_at)}}</div>
-          <div class=""></div>
-        </div>
-
-      </router-link>
       <el-pagination
         v-if="pageCount>1"
         layout="prev, pager, next"
@@ -51,6 +65,7 @@
 <script>
 import blog from '@/api/blog.js'
 import tag from '@/api/tag.js'
+import {mapGetters} from 'vuex'
 
 export default {
   data() {
@@ -59,10 +74,15 @@ export default {
       total: 0,
       page: 1,
       pageCount: 0,
-      sortBy: 'updated_at',
       tagList: [],
       filterTags: [],
+      sortBy: 'time'
     }
+  },
+  computed: {
+    ...mapGetters([
+      'user'
+    ])
   },
   created() {
     this.page = parseInt(this.$route.query.page) || 1
@@ -71,22 +91,23 @@ export default {
   },
   methods: {
     onPageChange(newPage) {
-      blog.getBlogs({page: newPage}).then(res => {
+      blog.getBlogsByUserId({userId: this.user.id, page: newPage}).then(res => {
         this.blogs = res.data
         this.total = res.total
         this.page = res.page
-        this.$router.push({path: '/', query: {page: newPage}})
+        this.$router.push({path: '/archive/', query: {page: newPage}})
       })
     },
+
     getBlogsByFilter(tag_id = []) {
-      blog.getBlogs({page: this.page, sortBy: this.sortBy, tag: tag_id}).then(res => {
-        console.log(res)
+      blog.getBlogsByUserId({userId: this.user.id, page: this.page, sortBy: this.sortBy, tag: tag_id}).then(res => {
         this.blogs = res.data
         this.total = res.total
         this.page = res.page
         this.pageCount = res.pageCount
       })
     },
+
     getTags() {
       tag.getTags().then(res => {
         this.tagList = res.data
@@ -94,11 +115,10 @@ export default {
     }
   }
 }
-
 </script>
 
 <style scoped lang="less">
-  @import "../assets/base.less";
+  @import "../../assets/base.less";
 
   #index {
     display: grid;
@@ -124,9 +144,11 @@ export default {
     #left-blogs {
       grid-column: 1;
       grid-row: 1;
-      margin: 22px 2%;
-      box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
-      border-radius: 3px;
+      margin-right: 2%;
+
+      .el-timeline {
+        padding-left: 20px;
+      }
 
       .item {
         background-color: #fff;
@@ -146,32 +168,13 @@ export default {
       .blog-item :hover {
         background-color: #efefef;
       }
-      //.avatar {
-      //  grid-column: 1;
-      //  grid-row: 1 / span 2;
-      //  justify-self: center;
-      //  margin-left: 0;
-      //  text-align: center;
-      //
-      //  img {
-      //    width: 60px;
-      //    height: 60px;
-      //    border-radius: 50%;
-      //  }
-      //
-      //  figcaption {
-      //    font-size: 12px;
-      //    color: @textLighterColor;
-      //  }
-      //}
-
     }
 
     #right-nav {
       grid-column: 2;
       grid-row: 1;
 
-      margin: 22px 6%;
+      margin: 22px 8%;
       background-color: #fff;
       box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
       border-radius: 3px;

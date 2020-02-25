@@ -113,7 +113,7 @@ export default {
 </script>
 
 <style lang="less">
-  @import "../assets/base.less";
+  @import "../../assets/base.less";
 
   #edit, #create {
     margin: 5%;

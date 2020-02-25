@@ -11,7 +11,9 @@
             <el-card>
               <h3>{{blog.title}}</h3>
               <div>{{blog.description}}</div>
-              <span v-if="blog.tags.length > 0" v-for="tag in blog.tags">{{tag.name}}</span>
+              <span v-if="blog.tags.length > 0">
+                <span  v-for="tag in blog.tags" :key="tag.id">{{tag.name}}</span>
+              </span>
               <!--<el-button type="mini">恢复</el-button>-->
               <!--<el-button type="mini">删除</el-button>-->
             </el-card>
@@ -77,7 +79,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-  @import "../assets/base.less";
+  @import "../../assets/base.less";
 
   #index {
     margin: 20px 0;

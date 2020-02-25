@@ -22,7 +22,7 @@
 import marked from 'marked'
 import blog from '@/api/blog'
 import comment from '@/api/comment'
-import VComments from './comment.vue'
+import VComments from '../comment/index.vue'
 
 export default {
   components: {
@@ -83,8 +83,8 @@ export default {
 </script>
 
 <style lang="less">
-  @import "../assets/base.less";
-  @import "../assets/article.less";
+  @import "../../assets/base.less";
+  @import "../../assets/article.less";
 
   #detail {
     .user-info {

@@ -1,12 +1,15 @@
 <template>
-  <div id="login">
+  <div id="register">
     <h4>用户名</h4>
     <input v-model="username" placeholder="用户名">
+    <h4>电子邮箱</h4>
+    <input v-model="email" placeholder="电子邮箱">
     <h4>密码</h4>
-    <input v-model="password" type="password" placeholder="密码" @keyup.enter="onLogin">
-    <el-button size="medium" @click="onLogin">立即登录</el-button>
-    <p class="notice">没有账号？
-      <router-link to="/register">注册新用户</router-link>
+    <input v-model="password" type="password" placeholder="密码" @keyup.enter="onRegister">
+
+    <el-button size="medium" @click="onRegister">立即注册</el-button>
+    <p class="notice">已有账号？
+      <router-link to="/login">立即登录</router-link>
     </p>
   </div>
 </template>
@@ -18,30 +21,30 @@ export default {
   data() {
     return {
       username: '',
+      email: '',
       password: ''
     }
   },
 
   methods: {
-    ...mapActions(['login']),
+    ...mapActions(['register']),
 
-    async onLogin() {
-      try {
-        await this.login({username: this.username, password: this.password})
-        this.$message.success("登录成功")
-        this.$router.push({path: this.$route.query.redirect || '/'})
-      }
-      catch (err) {
-        this.$message.error('账号或密码错误')
-      }
+    onRegister() {
+      this.register({username: this.username, password: this.password, email: this.email})
+        .then(() => {
+          this.$message.success("注册成功")
+          this.$router.push({path: '/'})
+        })
+        .catch(() => {
+          this.$message.error("注册失败")
+        })
     }
   }
 }
-
 </script>
 
 <style lang="less">
-  @import url('../assets/base.less');
+  @import url('../../assets/base.less');
 
   #login, #register {
     display: grid;

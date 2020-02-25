@@ -4,32 +4,16 @@
       <div class="block">
         <el-timeline>
           <el-timeline-item
-            v-if="blogs.length > 0"
-            v-for="blog in blogs"
-            :key="blog.id"
-            :timestamp="friendlyDate(blog.updated_at)"
-            placement="top">
-            <el-card>
-              <router-link :to="`/blog/${blog.id}`">
-                <h3>{{blog.title}}</h3>
-                <div>{{blog.description}}</div>
-                <span v-if="blog.tags.length > 0" v-for="tag in blog.tags">{{tag.name}}</span>
-              </router-link>
-            </el-card>
-          </el-timeline-item>
-          <el-timeline-item
-            v-if="blogs.length === 0"
-            :timestamp="friendlyDate(new Date())"
-            placement="top">
-            <el-card>
-              <router-link to="/create">
-                <i class="el-icon-edit"></i>
-                <span style="padding: 0 10px">新建博客</span>
-              </router-link>
-            </el-card>
+            v-for="(item, index) in blogs"
+            :key="index"
+            type="primary"
+            size="large"
+            :timestamp="friendlyDate(item.updated_at)">
+            {{item.content}}
           </el-timeline-item>
         </el-timeline>
       </div>
+
       <el-pagination
         v-if="pageCount>1"
         layout="prev, pager, next"
@@ -41,20 +25,11 @@
 
     </section>
     <section id="right-nav">
-      <div class="right-nav-top">热门标签</div>
+      <div class="right-nav-top">XXX</div>
 
 
       <div class="right-tags">
-        <el-button
-          type="text"
-          class="tag-item"
-          v-for="item in tagList"
-          :key="item.name"
-          @click="getBlogsByFilter(item.id)"
-          plain
-        >
-          {{ item.name }}
-        </el-button>
+
       </div>
 
     </section>
@@ -65,7 +40,6 @@
 <script>
 import blog from '@/api/blog.js'
 import tag from '@/api/tag.js'
-import {mapGetters} from 'vuex'
 
 export default {
   data() {
@@ -79,46 +53,45 @@ export default {
       sortBy: 'time'
     }
   },
-  computed: {
-    ...mapGetters([
-      'user'
-    ])
-  },
   created() {
     this.page = parseInt(this.$route.query.page) || 1
-    this.getBlogsByFilter(this.filterTags)
-    this.getTags()
+    blog.getBlogs({page: this.page, sortBy: this.sortBy}).then(res => {
+      console.log(res)
+      this.blogs = res.data
+      this.total = res.total
+      this.page = res.page
+      this.pageCount = res.pageCount
+    })
+    tag.getTags().then(res => {
+      this.tagList = res.data
+    })
   },
   methods: {
     onPageChange(newPage) {
-      blog.getBlogsByUserId({userId: this.user.id, page: newPage}).then(res => {
+      blog.getBlogs({page: newPage}).then(res => {
         this.blogs = res.data
         this.total = res.total
         this.page = res.page
-        this.$router.push({path: '/archive/', query: {page: newPage}})
+        this.$router.push({path: '/', query: {page: newPage}})
       })
     },
 
-    getBlogsByFilter(tag_id = []) {
-      blog.getBlogsByUserId({userId: this.user.id, page: this.page, sortBy: this.sortBy, tag: tag_id}).then(res => {
+    getBlogsByTags(tag_id) {
+
+      blog.getBlogs({page: this.page, sortBy: this.sortBy, tag: tag_id}).then(res => {
         this.blogs = res.data
         this.total = res.total
         this.page = res.page
         this.pageCount = res.pageCount
       })
-    },
-
-    getTags() {
-      tag.getTags().then(res => {
-        this.tagList = res.data
-      })
     }
   }
 }
+
 </script>
 
 <style scoped lang="less">
-  @import "../assets/base.less";
+  @import "../../assets/base.less";
 
   #index {
     display: grid;
@@ -144,7 +117,7 @@ export default {
     #left-blogs {
       grid-column: 1;
       grid-row: 1;
-      margin-right: 2%;
+      margin: 20px 2%;
 
       .el-timeline {
         padding-left: 20px;

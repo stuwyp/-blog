@@ -145,7 +145,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-  @import "../assets/base.less";
+  @import "../../assets/base.less";
 
   .comments-title {
     padding: 16px 0;

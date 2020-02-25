@@ -12,57 +12,57 @@ const router =  new Router({
   routes: [
     {
       path: '/',
-      component: () => import('@/pages/index.vue')
+      component: () => import('@/views/index/index.vue')
     },
     {
       path: '/login',
-      component: () => import('@/pages/login.vue')
+      component: () => import('@/views/login/index.vue')
     },
     {
       path: '/register',
-      component: () => import('@/pages/register.vue')
+      component: () => import('@/views/register/index.vue')
     },
     {
       path: '/blog/:blogId',
-      component: () => import('@/pages/blog.vue')
+      component: () => import('@/views/blog/index.vue')
     },
     {
       path: '/edit/:blogId',
-      component: () => import('@/pages/edit.vue'),
+      component: () => import('@/views/edit/index.vue'),
       meta: { requiresAuth: true }
     },
     {
       path: '/create',
-      component: () => import('@/pages/create.vue'),
+      component: () => import('@/views/create/index.vue'),
       meta: { requiresAuth: true }
     },
     {
       path: '/user/:userId',
-      component: () => import('@/pages/user.vue')
+      component: () => import('@/views/user/index.vue')
     },
     {
       path: '/my',
-      component: () => import('@/pages/my.vue'),
+      component: () => import('@/views/my/index.vue'),
       meta: { requiresAuth: true }
     },
     {
       path: '/notification',
-      component: () => import('@/pages/notification.vue'),
+      component: () => import('@/views/notification/index.vue'),
       meta: { requiresAuth: true }
     },
     {
       path: '/archive',
-      component: () => import('@/pages/archive.vue'),
+      component: () => import('@/views/archive/index.vue'),
       meta: { requiresAuth: true }
     },
     {
       path: '/draft',
-      component: () => import('@/pages/draft.vue'),
+      component: () => import('@/views/draft/index.vue'),
       meta: { requiresAuth: true }
     },
     {
       path: '/recycle_bin',
-      component: () => import('@/pages/recycleBin.vue'),
+      component: () => import('@/views/recycleBin/index.vue'),
       meta: { requiresAuth: true }
     },
   ]
