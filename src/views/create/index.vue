@@ -103,7 +103,7 @@ export default {
     },
     showInput: function () {
       this.inputVisible = true
-      this.$nextTick(_ => {
+      this.$nextTick(() => {
         this.$refs.saveTagInput.$refs.input.focus()
       })
     },
@@ -113,7 +113,7 @@ export default {
 </script>
 
 <style lang="less">
-  @import "../../assets/base.less";
+  @import "~@/assets/base.less";
 
   #edit, #create {
     margin: 5%;

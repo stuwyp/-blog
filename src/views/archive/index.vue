@@ -3,20 +3,24 @@
     <section id="left-blogs">
       <div class="block">
         <el-timeline>
-          <el-timeline-item
-            v-if="blogs.length > 0"
-            v-for="blog in blogs"
-            :key="blog.id"
-            :timestamp="friendlyDate(blog.updated_at)"
-            placement="top">
-            <el-card>
-              <router-link :to="`/blog/${blog.id}`">
-                <h3>{{blog.title}}</h3>
-                <div>{{blog.description}}</div>
-                <span v-if="blog.tags.length > 0" v-for="tag in blog.tags">{{tag.name}}</span>
-              </router-link>
-            </el-card>
-          </el-timeline-item>
+          <div v-if="blogs.length > 0">
+
+            <el-timeline-item
+              v-for="blog in blogs"
+              :key="blog.id"
+              :timestamp="friendlyDate(blog.updated_at)"
+              placement="top">
+              <el-card>
+                <router-link :to="`/blog/${blog.id}`">
+                  <h3>{{blog.title}}</h3>
+                  <div>{{blog.description}}</div>
+                  <div v-if="blog.tags.length > 0">
+                    <span v-for="tag in blog.tags" :key="tag.id">{{tag.name}}</span>
+                  </div>
+                </router-link>
+              </el-card>
+            </el-timeline-item>
+          </div>
           <el-timeline-item
             v-if="blogs.length === 0"
             :timestamp="friendlyDate(new Date())"
@@ -118,13 +122,12 @@ export default {
 </script>
 
 <style scoped lang="less">
-  @import "../../assets/base.less";
+  @import "~@/assets/base.less";
 
   #index {
     display: grid;
     grid-template-columns: 1fr 27%;
     margin: 20px 0;
-    background-color: @bgColor;
 
     h3 {
       margin: 5px 0;
