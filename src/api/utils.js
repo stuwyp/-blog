@@ -7,7 +7,7 @@ const URL = {
 
 export default {
   globalSearch(content) {
-    console.log(content)
+    // console.log(content)
     return request(URL.GLOBAL_SEARCH, 'GET', {key:content})
   }
 }

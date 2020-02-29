@@ -36,7 +36,7 @@ export default {
   },
 
   createBlog({title = '', content = '', description = '', user_id, tags}) {
-    console.log(JSON.stringify(tags))
+    // console.log(JSON.stringify(tags))
     return request(URL.CREATE, 'POST', {title, content, description, user_id, tags: JSON.stringify(tags)})
   }
 }
