@@ -1,40 +1,18 @@
 <template>
   <div id="index">
-    <section id="left-blogs">
-      <div class="block">
-        <el-timeline>
-          <el-timeline-item
-            v-if="blogs.length > 0"
-            v-for="blog in blogs"
-            :key="blog.id"
-            :timestamp="friendlyDate(blog.updated_at)"
-            placement="top">
-            <el-card>
-              <router-link :to="`/blog/${blog.id}`">
-                <h3>{{blog.title}}</h3>
-                <div>{{blog.description}}</div>
-                <span v-if="blog.tags.length > 0" v-for="tag in blog.tags">{{tag.name}}</span>
-              </router-link>
-            </el-card>
-          </el-timeline-item>
-          <el-timeline-item
-            v-else
-            :timestamp="friendlyDate(new Date())"
-            placement="top">
-            <el-card>
-              暂无文章
-            </el-card>
-          </el-timeline-item>
-          <el-timeline-item
-            v-else
-            :timestamp="friendlyDate(new Date())"
-            placement="top">
-            <el-card>
-              <router-link to="/create">开始我的第一篇博客</router-link>
-            </el-card>
-          </el-timeline-item>
-        </el-timeline>
-      </div>
+    <section>
+      <router-link class="blog-item" v-for="blog in blogs" :key="blog.id" :to="`/blog/${blog.id}`">
+        <div class="item">
+          <h3>{{blog.title}}000</h3>
+          <div>{{blog.description}}</div>
+          <div v-if="blog.tags.length > 0">
+            <span>v-for="tag in blog.tags">{{tag.name}}</span>
+          </div>
+          <div> {{friendlyDate(blog.created_at)}}</div>
+          <div class=""></div>
+        </div>
+
+      </router-link>
       <el-pagination
         v-if="pageCount>1"
         layout="prev, pager, next"
@@ -43,33 +21,14 @@
         :current-page="page"
         @current-change="onPageChange">
       </el-pagination>
-
     </section>
-    <section id="right-nav">
-      <div class="right-nav-top">热门标签</div>
-
-
-      <div class="right-tags">
-        <el-button
-          type="text"
-          class="tag-item"
-          v-for="item in tagList"
-          :key="item.name"
-          @click="getBlogsByTags(item.id)"
-          plain
-        >
-          {{ item.name }}
-        </el-button>
-      </div>
-
-    </section>
-
   </div>
 </template>
 
 <script>
 import blog from '@/api/blog.js'
 import tag from '@/api/tag.js'
+import {mapGetters} from 'vuex'
 
 export default {
   data() {
@@ -83,9 +42,14 @@ export default {
       sortBy: 'time'
     }
   },
+  computed: {
+    ...mapGetters([
+      'user'
+    ])
+  },
   created() {
     this.page = parseInt(this.$route.query.page) || 1
-    blog.getBlogsByUserId({page: this.page, sortBy: this.sortBy}).then(res => {
+    blog.getBlogsByUserId({userId: this.user.id, page: this.page, sortBy: this.sortBy}).then(res => {
       console.log(res)
       this.blogs = res.data
       this.total = res.total
@@ -121,100 +85,15 @@ export default {
 </script>
 
 <style scoped lang="less">
-  @import "../../assets/base.less";
+  @import "~@/assets/base.less";
 
   #index {
-    display: grid;
-    grid-template-columns: 1fr 27%;
-    margin: 20px 0;
-    background-color: @bgColor;
-
-    h3 {
-      margin: 5px 0;
+    height: 100%;
+    .list{
+      margin: 20px auto;
+      width: 200px;
+      height: 100%;
     }
-    span {
-      text-align: right;
-      margin: 5px 0;
-      font-size: 15px;
-      color: @textLighterColor;
-
-      a {
-        color: @themeColor;
-        text-decoration: none;
-      }
-    }
-
-    #left-blogs {
-      grid-column: 1;
-      grid-row: 1;
-      margin-right: 2%;
-
-      .el-timeline {
-        padding-left: 20px;
-      }
-
-      .item {
-        background-color: #fff;
-        border-radius: 3px;
-        padding: 12px;
-        margin: 0 0 1px;
-        border: 1px solid #efefef;
-        border-bottom: 0;
-      }
-
-      .blog-sort {
-        background-color: #fff;
-        padding-right: 20px;
-        cursor: pointer;
-
-      }
-      .blog-item :hover {
-        background-color: #efefef;
-      }
-    }
-
-    #right-nav {
-      grid-column: 2;
-      grid-row: 1;
-
-      margin: 22px 8%;
-      background-color: #fff;
-      box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
-      border-radius: 3px;
-
-      height: 500px;
-
-      .right-nav-top {
-        background-color: #fff;
-        padding: 12px 6px;
-        margin: 0 5%;
-        border-bottom: 1px solid #efefef;
-        color: @textLighterColor;
-      }
-
-      .right-tags {
-        margin: 0 10px;
-        .el-button {
-          color: #999;
-          :hover, :active {
-            color: #2dc1c2;
-          }
-        }
-        .tag-item {
-          cursor: pointer;
-          margin: 10px 8px;
-          padding: 10px 8px;
-          border-radius: 3px;
-          border: 0;
-          font-size: 18px;
-
-        }
-      }
-
-    }
-    //p {
-    //  padding-bottom: 20px;
-    //}
   }
 
   .el-pagination .el-pager li,
