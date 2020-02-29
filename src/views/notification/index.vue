@@ -56,7 +56,7 @@ export default {
   created() {
     this.page = parseInt(this.$route.query.page) || 1
     blog.getBlogs({page: this.page, sortBy: this.sortBy}).then(res => {
-      console.log(res)
+      // console.log(res)
       this.blogs = res.data
       this.total = res.total
       this.page = res.page
@@ -91,13 +91,11 @@ export default {
 </script>
 
 <style scoped lang="less">
-  @import "../../assets/base.less";
+  @import "~@/assets/base.less";
 
   #index {
     display: grid;
     grid-template-columns: 1fr 27%;
-    margin: 20px 0;
-    background-color: @bgColor;
 
     h3 {
       margin: 5px 0;

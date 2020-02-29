@@ -1,6 +1,6 @@
 <template>
-  <div id="index">
-    <section id="left-blogs">
+  <div class="index">
+    <section class="left-blogs">
       <div class="item">
         <span class="blog-sort">热门</span>
         <span class="blog-sort">最新</span>
@@ -9,8 +9,9 @@
         <div class="item">
           <h3>{{blog.title}}</h3>
           <div>{{blog.description}}</div>
-          <span v-if="blog.tags.length > 0" v-for="tag in blog.tags">{{tag.name}}</span>
-
+          <div v-if="blog.tags.length > 0">
+            <span v-for="tag in blog.tags" :key="tag.id">{{tag.name}}</span>
+          </div>
           <div> {{friendlyDate(blog.created_at)}}</div>
           <div class=""></div>
         </div>
@@ -26,7 +27,7 @@
       </el-pagination>
 
     </section>
-    <section id="right-nav">
+    <section class="right-nav">
       <div class="right-nav-top">热门标签</div>
 
 
@@ -98,13 +99,12 @@ export default {
 </script>
 
 <style scoped lang="less">
-  @import "../../assets/base.less";
+  @import "~@/assets/base.less";
 
-  #index {
+  .index {
+    padding: 0 15%;
     display: grid;
     grid-template-columns: 1fr 27%;
-    margin: 20px 0;
-    background-color: @bgColor;
 
     h3 {
       margin: 5px 0;
@@ -121,10 +121,10 @@ export default {
       }
     }
 
-    #left-blogs {
+    .left-blogs {
       grid-column: 1;
       grid-row: 1;
-      margin: 22px 2%;
+      margin: 30px 2%;
       box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
       border-radius: 3px;
 
@@ -167,11 +167,11 @@ export default {
 
     }
 
-    #right-nav {
+    .right-nav {
       grid-column: 2;
       grid-row: 1;
 
-      margin: 22px 6%;
+      margin: 30px 6%;
       background-color: #fff;
       box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
       border-radius: 3px;
@@ -214,5 +214,11 @@ export default {
   .el-pagination .el-pager li,
   .el-pagination button {
     background-color: #fbfbfb !important;
+  }
+
+  @media (max-width: 960px) {
+    .index {
+      padding: 0 10%;
+    }
   }
 </style>

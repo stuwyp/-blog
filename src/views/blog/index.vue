@@ -1,20 +1,24 @@
 <template>
-  <div id="detail">
-    <section class="user-info">
-      <h3>{{title}}</h3>
-      <span>
+  <div id="article">
+    <div class="panel"></div>
+    <div class="article-main">
+      <section class="user-info">
+        <h3>{{title}}</h3>
+        <span>
         发布于{{friendlyDate(createdAt)}}
       </span>
-    </section>
-    <section class="article" v-html="markdown"></section>
-    <section>
-      <v-comments
-        :blogId="blogId"
-        :blogComments="blogComments"
-        @update="updateComments"
-        @changeCommentsPage="changeCommentsPage">
-      </v-comments>
-    </section>
+      </section>
+      <section class="article" v-html="markdown"></section>
+      <section>
+        <v-comments
+          :blogId="blogId"
+          :blogComments="blogComments"
+          @update="updateComments"
+          @changeCommentsPage="changeCommentsPage">
+        </v-comments>
+      </section>
+    </div>
+    <div class="anchor"></div>
   </div>
 </template>
 
@@ -83,10 +87,24 @@ export default {
 </script>
 
 <style lang="less">
-  @import "../../assets/base.less";
-  @import "../../assets/article.less";
+  @import "~@/assets/base.less";
+  @import "~@/assets/article.less";
+  #article {
+    height: 100%;
+    margin: 0 15%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-  #detail {
+    .panel{
+      width: 40px;
+      margin:  0 10px;
+    }
+
+    .article-main{
+      flex: 1;
+    }
+
     .user-info {
       display: grid;
       grid-template-columns: 1fr 180px;

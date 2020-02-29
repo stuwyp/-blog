@@ -1,5 +1,5 @@
 <template>
-  <div id="register">
+  <div class="register">
     <h4>用户名</h4>
     <input v-model="username" placeholder="用户名">
     <h4>电子邮箱</h4>
@@ -9,7 +9,7 @@
 
     <el-button size="medium" @click="onRegister">立即注册</el-button>
     <p class="notice">已有账号？
-      <router-link to="/login">立即登录</router-link>
+      <router-link to="/auth/login">立即登录</router-link>
     </p>
   </div>
 </template>
@@ -32,7 +32,10 @@ export default {
     onRegister() {
       this.register({username: this.username, password: this.password, email: this.email})
         .then(() => {
-          this.$message.success("注册成功")
+          this.$message.success({
+            duration: 1500,
+            message: "注册成功"
+          })
           this.$router.push({path: '/'})
         })
         .catch(() => {
@@ -43,13 +46,13 @@ export default {
 }
 </script>
 
-<style lang="less">
-  @import url('../../assets/base.less');
+<style scoped lang="less">
+  @import '~@/assets/base.less';
 
-  #login, #register {
+  .register {
     display: grid;
     justify-content: center;
-    padding-top: 10%;
+    padding-top: 15%;
 
     h4 {
       margin: 10px 0 5px;

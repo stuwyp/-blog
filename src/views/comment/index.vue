@@ -124,13 +124,16 @@ export default {
       let {content} = this.ruleForm;
       try {
         // console.log(this.user)
-        const res = await comment.createComment({
+        await comment.createComment({
           content,
           blog_id: this.blogId,
           user_id: this.user.id
         });
 
-        this.$message.success('评论成功');
+        this.$message.success({
+          duration: 1500,
+          message: '评论成功'
+        });
         this.resetForm('ruleForm');
         this.$emit('update');
       }
@@ -145,12 +148,13 @@ export default {
 </script>
 
 <style scoped lang="less">
-  @import "../../assets/base.less";
+  @import "~@/assets/base.less";
 
   .comments-title {
     padding: 16px 0;
     color: @themeLighterColor;
-    font-size: 25px;
+    font-size: 20px;
+    font-weight: normal;
   }
 
   .comments-create {
@@ -198,6 +202,7 @@ export default {
     width: 100%;
     box-sizing: border-box;
   }
+
 
 </style>
 

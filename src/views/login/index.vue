@@ -6,7 +6,7 @@
     <input v-model="password" type="password" placeholder="密码" @keyup.enter="onLogin">
     <el-button size="medium" @click="onLogin">立即登录</el-button>
     <p class="notice">没有账号？
-      <router-link to="/register">注册新用户</router-link>
+      <router-link to="/auth/register">注册新用户</router-link>
     </p>
   </div>
 </template>
@@ -28,7 +28,10 @@ export default {
     async onLogin() {
       try {
         await this.login({username: this.username, password: this.password})
-        this.$message.success("登录成功")
+        this.$message.success({
+          duration: 1500,
+          message: "登录成功"
+        })
         this.$router.push({path: this.$route.query.redirect || '/'})
       }
       catch (err) {
@@ -40,13 +43,13 @@ export default {
 
 </script>
 
-<style lang="less">
-  @import url('../../assets/base.less');
+<style scoped lang="less">
+  @import url('~@/assets/base.less');
 
-  #login, #register {
+  #login{
     display: grid;
     justify-content: center;
-    padding-top: 10%;
+    padding-top: 15%;
 
     h4 {
       margin: 10px 0 5px;
