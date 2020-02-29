@@ -8,7 +8,6 @@
 
 <style scoped>
   footer {
-    /*align-self: end;*/
     background-color: #f9f9f9;
     color: #666;
     font-size: 15px;
