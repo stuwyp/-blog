@@ -59,7 +59,8 @@ module.exports = {
         '@': resolve('src')
       }
     }
-  }, chainWebpack(config) {
+  },
+  chainWebpack(config) {
     config.plugins.delete('preload') // TODO: need test
     config.plugins.delete('prefetch') // TODO: need test
 
