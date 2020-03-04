@@ -1,0 +1,24 @@
+@import "./base.less";
+
+.pagination {
+  display: grid;
+  justify-items: center;
+  margin-bottom: 30px;
+}
+
+
+.el-button {
+  color: @themeColor;
+  border: 1px solid @themeLighterColor;
+  background: #fff;
+  border-radius: 4px;
+}
+
+.el-button:hover {
+  color: #fff;
+  background-color: @themeLighterColor;
+}
+
+.el-input.is-active .el-input__inner, .el-input__inner:focus, .el-textarea__inner:focus {
+  border-color: @themeLighterColor;
+}
