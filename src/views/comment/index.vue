@@ -6,17 +6,16 @@
       <el-form :model="ruleForm" status-icon :rules="rules" label-position="left" ref="ruleForm" label-width="50px"
                class="demo-ruleForm">
         <el-form-item label="内容" prop="content">
-          <el-input type="textarea" placeholder="请输入评论内容" :autosize="{ minRows: 2, maxRows: 8}"
+          <el-input type="textarea" placeholder="请输入评论内容" :autosize="{ minRows: 1, maxRows: 6}"
                     v-model="ruleForm.content"
                     autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button @click="resetForm('ruleForm')">重置</el-button>
-          <el-button type="primary" @click="submitForm('ruleForm')">提交评论</el-button>
+          <el-button class="btn" size="small" @click="resetForm('ruleForm')">重置</el-button>
+          <el-button class="btn" size="small" type="primary" @click="submitForm('ruleForm')">提交</el-button>
         </el-form-item>
       </el-form>
     </section>
-
     <section class="comments-list" v-if="blogComments.list  && blogComments.list.length > 0">
       <h3 class="comments-title">评论列表</h3>
       <ul class="comments-box">
@@ -33,7 +32,7 @@
       </ul>
       <section class="page" v-if="blogComments.list && blogComments.list.length">
         <el-pagination
-          v-if="blogComments.pageCount>0"
+          v-if="blogComments.pageCount>1"
           background
           layout="prev, pager, next"
           :page-count="blogComments.pageCount"
@@ -153,7 +152,7 @@ export default {
   .comments-title {
     padding: 16px 0;
     color: @themeLighterColor;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: normal;
   }
 
@@ -175,7 +174,7 @@ export default {
     }
 
     .comments-item-username {
-      font-size: 20px;
+      font-size: 16px;
       color: #5eafbb;
       font-weight: 500;
     }
@@ -203,6 +202,16 @@ export default {
     box-sizing: border-box;
   }
 
+  /deep/ .el-form-item__label {
+    margin: 3px 0;
+  }
+
+  /deep/ .btn.el-button {
+    width: 60px;
+  }
+</style>
+
+<style lang="less">
 
 </style>
 

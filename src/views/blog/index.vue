@@ -1,15 +1,15 @@
 <template>
-  <div id="article">
+  <div class="article-detail">
     <div class="panel"></div>
     <div class="article-main">
-      <section class="user-info">
+      <section class="top-info">
         <h3>{{title}}</h3>
         <span>
         发布于{{friendlyDate(createdAt)}}
       </span>
       </section>
       <section class="article" v-html="markdown"></section>
-      <section>
+      <section class="comment-panel">
         <v-comments
           :blogId="blogId"
           :blogComments="blogComments"
@@ -75,11 +75,11 @@ export default {
 
     // 切换评论页面
     async changeCommentsPage(page) {
-      const res = await this.getCommentsByBlogId({
+      const res = await comment.getCommentsByBlogId({
         blogId: this.blogId,
         page: page
       });
-      this.detail.comments_list = res.data.data;
+      this.blogComments = res.data;
     }
   }
 }
@@ -89,62 +89,58 @@ export default {
 <style lang="less">
   @import "~@/assets/base.less";
   @import "~@/assets/article.less";
-  #article {
-    height: 100%;
-    margin: 0 15%;
+
+  .article-detail {
+    margin: 40px 15% 20px;
     display: flex;
     align-items: center;
     justify-content: center;
 
-    .panel{
+    .panel {
       width: 40px;
-      margin:  0 10px;
+      margin: 0 10px;
     }
 
-    .article-main{
+    .article-main {
+      background-color: white;
       flex: 1;
-    }
+      padding: 20px;
 
-    .user-info {
-      display: grid;
-      grid-template-columns: 1fr 180px;
-
-      margin-top: 20px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid #ebebeb;
-
-      //.avatar {
-      //  grid-column: 1;
-      //  grid-row: 1 / span 2;
-      //
-      //  width: 60px;
-      //  height: 60px;
-      //  border-radius: 50%;
-      //}
-
-      h3 {
-        grid-column: 1;
-        grid-row: 1;
-        margin: 5px 0;
+      .article {
+        padding: 20px;
+        min-height: 400px;
       }
 
-      span {
-        text-align: right;
-        grid-column: 2;
-        grid-row: 1;
-        margin: 5px 0;
-        font-size: 15px;
-        color: @textLighterColor;
+      .top-info {
+        display: grid;
+        grid-template-columns: 1fr 180px;
 
-        a {
-          color: @themeColor;
-          text-decoration: none;
+        margin: 0 10px;
+        padding: 0 10px 10px;
+        border-bottom: 1px solid #ebebeb;
+
+        h3 {
+          font-size: 18px;
+          font-weight: 600;
+          grid-column: 1;
+          grid-row: 1;
+          margin: 5px 0;
+        }
+
+        span {
+          text-align: right;
+          grid-column: 2;
+          grid-row: 1;
+          margin: 5px 0;
+          font-size: 15px;
+          color: @textLighterColor;
         }
       }
-    }
 
-    .article {
-      padding: 30px 0;
+      .comment-panel{
+        padding: 10px;
+      }
+
     }
 
   }
