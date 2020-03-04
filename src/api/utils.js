@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
 const URL = {
-  GLOBAL_SEARCH: '/blog/search',
+  GLOBAL_SEARCH: '/api/blog/search',
 }
 
 

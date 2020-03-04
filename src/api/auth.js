@@ -1,10 +1,10 @@
 import request from '@/utils/request'
 
 const URL = {
-  REGISTER: '/auth/register',
-  LOGIN: '/auth/login',
-  LOGOUT: '/auth/logout',
-  GET_INFO: '/auth/info'
+  REGISTER: '/api/auth/register',
+  LOGIN: '/api/auth/login',
+  LOGOUT: '/api/auth/logout',
+  GET_INFO: '/api/auth/info'
 }
 
 export default {

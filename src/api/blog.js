@@ -1,13 +1,13 @@
 import request from '@/utils/request'
 
 const URL = {
-  GET_LIST: '/blog',
-  GET_BLOG_DETAIL: '/blog/:blogId',
-  CREATE: '/blog',
-  UPDATE: '/blog/:blogId',
-  DELETE: '/blog/:blogId',
-  GET_USER_BLOGS: '/user/:userId/blogs',
-  GET_USER_RECYCLE_BLOGS: '/user/:userId/recycle_blogs',
+  GET_LIST: '/api/blog',
+  GET_BLOG_DETAIL: '/api/blog/:blogId',
+  CREATE: '/api/blog',
+  UPDATE: '/api/blog/:blogId',
+  DELETE: '/api/blog/:blogId',
+  GET_USER_BLOGS: '/api/user/:userId/blogs',
+  GET_USER_RECYCLE_BLOGS: '/api/user/:userId/recycle_blogs',
 }
 
 export default {
@@ -28,15 +28,24 @@ export default {
   },
 
   updateBlog({blogId, title, content, description}) {
-    return request(URL.UPDATE.replace(':blogId', blogId), 'PATCH', {title, content, description})
+    return request(URL.UPDATE.replace(':blogId', blogId), 'PUT', {title, content, description})
   },
 
   deleteBlog({blogId}) {
     return request(URL.DELETE.replace(':blogId', blogId), 'DELETE')
   },
 
-  createBlog({title = '', content = '', description = '', user_id, tags}) {
-    // console.log(JSON.stringify(tags))
-    return request(URL.CREATE, 'POST', {title, content, description, user_id, tags: JSON.stringify(tags)})
+  createBlog({title = '', content = '', description = '', user_id, tags, uuid, category_id, state}) {
+    console.log(arguments)
+    return request(URL.CREATE, 'POST', {
+      title,
+      content,
+      description,
+      user_id,
+      tags: JSON.stringify(tags),
+      uuid,
+      category_id,
+      state
+    })
   }
 }

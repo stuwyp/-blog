@@ -1,13 +1,13 @@
 import request from '@/utils/request'
 
 const URL = {
-  GET_LIST: '/comment',
-  GET_COMMENT_DETAIL: '/comment/:commentId',
-  CREATE: '/comment',
-  UPDATE: '/comment/:commentId',
-  DELETE: '/comment/:commentId',
-  GET_LIST_BY_USER: '/user/:userId/comments',
-  GET_LIST_BY_BLOG: '/blog/:blogId/comments',
+  GET_LIST: '/api/comment',
+  GET_COMMENT_DETAIL: '/api/comment/:commentId',
+  CREATE: '/api/comment',
+  UPDATE: '/api/comment/:commentId',
+  DELETE: '/api/comment/:commentId',
+  GET_LIST_BY_USER: '/api/user/:userId/comments',
+  GET_LIST_BY_BLOG: '/api/blog/:blogId/comments',
 }
 
 export default {
