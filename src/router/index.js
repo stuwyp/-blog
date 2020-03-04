@@ -34,7 +34,7 @@ const router = new Router({
       children: [
         {
           path: 'login',
-          component: () => import('@/views/login/index.vue'),
+          component: () => import('@/views/auth/login.vue'),
           meta: {
             title: '登录',
             isMenu: true
@@ -42,7 +42,7 @@ const router = new Router({
         },
         {
           path: 'register',
-          component: () => import('@/views/register/index.vue'),
+          component: () => import('@/views/auth/register.vue'),
           meta: {
             title: '注册',
             isMenu: true
@@ -66,34 +66,6 @@ const router = new Router({
       ]
     },
     {
-      path: '/draft',
-      redirect: '/draft/index',
-      component: Layout,
-      name: '草稿',
-      meta: {
-        title: '草稿',
-        requiresAuth: true
-      },
-      children: [
-        {
-          path: 'index',
-          component: () => import('@/views/draft/index.vue'),
-          meta: {
-            requiresAuth: true,
-            isMenu: true
-          }
-        },
-        {
-          path: 'new',
-          component: () => import('@/views/draft/new.vue'),
-          meta: {
-            requiresAuth: true,
-            isMenu: false
-          }
-        },
-      ]
-    },
-    {
       name: '通知',
       path: '/notification',
       redirect: '/notification/index',
@@ -112,21 +84,78 @@ const router = new Router({
     },
 
     {
+      path: '/editor',
+      component: Layout,
+      children: [
+        {
+          path: 'drafts',
+          component: () => import('@/views/draft/index.vue'),
+          meta: {
+            requiresAuth: true,
+            isMenu: true
+          }
+        },
+        {
+          path: 'drafts/new',
+          component: () => import('@/views/draft/edit.vue'),
+          meta: {
+            requiresAuth: true,
+            isMenu: false
+          }
+        },
+        {
+          path: 'drafts/:uuid',
+          component: () => import('@/views/draft/edit.vue'),
+          meta: {
+            requiresAuth: true,
+            isMenu: false
+          }
+        },
+        {
+          path: 'blogs/:uuid',
+          component: () => import('@/views/blog/edit.vue'),
+          meta: {
+            requiresAuth: true,
+            isMenu: false
+          }
+        },
+      ]
+    },
+    {
+      path: '/published',
+      component: Layout,
+      children: [
+        {
+          name: '发布',
+          path: '',
+          component: () => import('@/views/publish/published.vue'),
+          meta: {
+            requiresAuth: true,
+            isMenu: true
+          }
+        }
+      ]
+
+    },
+    {
       path: '/blog',
       component: Layout,
       children: [
         {
           path: ':blogId',
           component: () => import('@/views/blog/index.vue'),
-        }
+          meta: {
+            isMenu: true
+          }
+        },
+        {
+          path: 'edit/:blogId',
+          component: () => import('@/views/blog/edit.vue'),
+          meta: {requiresAuth: true}
+        },
       ]
+    },
 
-    },
-    {
-      path: '/edit/:blogId',
-      component: () => import('@/views/edit/index.vue'),
-      meta: {requiresAuth: true}
-    },
     {
       path: '/user/:userId',
       component: () => import('@/views/user/index.vue')
@@ -171,6 +200,7 @@ router.beforeEach((to, from, next) => {
   } else {
     next() // 确保一定要调用 next()
   }
+
 })
 
 export default router
