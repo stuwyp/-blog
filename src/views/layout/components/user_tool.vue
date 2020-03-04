@@ -6,7 +6,7 @@
           </span>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item>
-          <router-link to="/draft">草稿</router-link>
+          <router-link to="/editor/drafts">草稿</router-link>
         </el-dropdown-item>
         <el-dropdown-item>
           <router-link to="/recycle_bin">回收站</router-link>

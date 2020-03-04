@@ -68,7 +68,7 @@ export default {
         {title: '', url: ''},
         {title: '首页', url: '/index'},
         {title: '社区', url: '/post/index'},
-        {title: '写文章', url: '/draft/new'},
+        {title: '写文章', url: '/editor/drafts/new'},
       ]
     }
   },

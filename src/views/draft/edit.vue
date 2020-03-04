@@ -155,14 +155,17 @@ export default {
 
     }
   },
+
   computed: {
     ...mapGetters([
       'user'
     ])
   },
+
   mounted() {
     this.fetch_data()
   },
+
   watch: {
     '$route'(to, from) {
       console.log(to)
@@ -216,6 +219,7 @@ export default {
       }
     }
   },
+
   methods: {
     debounceUpdateDraft: debounce(async function () {
       let data = {
@@ -262,18 +266,20 @@ export default {
           cate.getCates()
         this.categories = res.data
         this.cate_id = 8
-        if (to.path === '/editor/drafts/new') {
-          this.match = 0
-          this.draft_title = ''
-          this.draft_content = ''
-          this.tags = []
-          this.skip_content_watch = true
-          this.skip_title_watch = true
-          this.isEdited = false
-          this.isEditing = false
-        } else if (from.path === '/editor/drafts/new') {
-          this.skip_content_watch = true
-          this.skip_title_watch = true
+        if (to || from) {
+          if (to.path === '/editor/drafts/new') {
+            this.match = 0
+            this.draft_title = ''
+            this.draft_content = ''
+            this.tags = []
+            this.skip_content_watch = true
+            this.skip_title_watch = true
+            this.isEdited = false
+            this.isEditing = false
+          } else if (from.path === '/editor/drafts/new') {
+            this.skip_content_watch = true
+            this.skip_title_watch = true
+          }
         }
         this.getDraft()
       }
