@@ -39,7 +39,7 @@ import {
 // 修复 多次点击标签出错 bug
 const routerPush = Router.prototype.push
 Router.prototype.push = function push(location) {
-  return routerPush.call(this, location).catch(error=> error)
+  return routerPush.call(this, location).catch(error => error)
 }
 
 Vue.use(Button);
@@ -64,7 +64,6 @@ Vue.config.productionTip = false
 Vue.use(mavonEditor)
 Vue.use(ElementUI);
 Vue.use(Date)
-
 
 
 /* eslint-disable no-new */

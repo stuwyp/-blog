@@ -142,20 +142,36 @@ const router = new Router({
       component: Layout,
       children: [
         {
-          path: ':blogId',
+          path: ':uuid',
           component: () => import('@/views/blog/index.vue'),
           meta: {
             isMenu: true
           }
         },
         {
-          path: 'edit/:blogId',
+          path: 'edit/:uuid',
           component: () => import('@/views/blog/edit.vue'),
-          meta: {requiresAuth: true}
+          meta: {
+            requiresAuth: true
+          }
         },
       ]
     },
+    {
+      path: '/recycle_bin',
+      component: Layout,
+      children: [
+        {
+          path: '',
+          component: () => import('@/views/recycleBin/index.vue'),
+          meta: {
+            requiresAuth: true,
+            isMenu: true
+          }
+        }
+      ]
 
+    },
     {
       path: '/user/:userId',
       component: () => import('@/views/user/index.vue')
@@ -170,11 +186,7 @@ const router = new Router({
       component: () => import('@/views/archive/index.vue'),
       meta: {requiresAuth: true}
     },
-    {
-      path: '/recycle_bin',
-      component: () => import('@/views/recycleBin/index.vue'),
-      meta: {requiresAuth: true}
-    },
+
     {
       path: '/404',
       component: () => import('@/views/404.vue'),
