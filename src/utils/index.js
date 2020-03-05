@@ -52,30 +52,56 @@ export function param2Json(param) {
     '"}'
 }
 
-export function formatTime(time, option) {
-  time = +time * 1000
-  const d = new Date(time)
-  const now = Date.now()
+// export function formatTime(time, option) {
+//   time = +time * 1000
+//   const d = new Date(time)
+//   const now = Date.now()
+//
+//   const diff = (now - d) / 1000
+//
+//   if (diff < 30) {
+//     return '刚刚'
+//   } else if (diff < 3600) {
+//     // less 1 hour
+//     return Math.ceil(diff / 60) + '分钟前'
+//   } else if (diff < 3600 * 24) {
+//     return Math.ceil(diff / 3600) + '小时前'
+//   } else if (diff < 3600 * 24 * 2) {
+//     return '1天前'
+//   }
+//   if (option) {
+//     return parseTime(time, option)
+//   } else {
+//     return (
+//       d.getMonth() + 1 + '月' + d.getDate() + '日' + d.getHours() + '时' + d.getMinutes() + '分'
+//     )
+//   }
+// }
+/**
+ * 传入时间戳，转换指定的时间格式
+ * @param {Number} val      时间戳
+ * @param {String} dateType 要得到的时间格式 例如 YYYY-MM-DD hh:mm:ss
+ * @return dataStr 例如 YYYY-MM-DD hh:mm:ss
+ */
+export function switchTime(val = +new Date(), dateType = 'YYYY-MM-DD hh:mm:ss') {
+  // 将字符串转换成数字
+  const timeStamp = +new Date(val)
 
-  const diff = (now - d) / 1000
+  // 如果转换成数字出错
+  if (!timeStamp) {
+    return val
+  }
+  let str
+  // 得到时间字符串
+  const dateStr = new Date(timeStamp)
+  str = dateType.replace('YYYY', dateStr.getFullYear())
+  str = str.replace('MM', (dateStr.getMonth() + 1 < 10 ? '0' : '') + (dateStr.getMonth() + 1))
+  str = str.replace('DD', (dateStr.getDate() < 10 ? '0' : '') + dateStr.getDate())
+  str = str.replace('hh', (dateStr.getHours() < 10 ? '0' : '') + dateStr.getHours())
+  str = str.replace('mm', (dateStr.getMinutes() < 10 ? '0' : '') + dateStr.getMinutes())
+  str = str.replace('ss', (dateStr.getSeconds() < 10 ? '0' : '') + dateStr.getSeconds())
 
-  if (diff < 30) {
-    return '刚刚'
-  } else if (diff < 3600) {
-    // less 1 hour
-    return Math.ceil(diff / 60) + '分钟前'
-  } else if (diff < 3600 * 24) {
-    return Math.ceil(diff / 3600) + '小时前'
-  } else if (diff < 3600 * 24 * 2) {
-    return '1天前'
-  }
-  if (option) {
-    return parseTime(time, option)
-  } else {
-    return (
-      d.getMonth() + 1 + '月' + d.getDate() + '日' + d.getHours() + '时' + d.getMinutes() + '分'
-    )
-  }
+  return str
 }
 
 export function debounce(fn, wait) {

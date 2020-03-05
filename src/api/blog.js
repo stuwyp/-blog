@@ -2,10 +2,10 @@ import request from '@/utils/request'
 
 const URL = {
   GET_LIST: '/api/blog',
-  GET_BLOG_DETAIL: '/api/blog/:blogId',
+  GET_BLOG_DETAIL: '/api/blog/:uuid',
   CREATE: '/api/blog',
-  UPDATE: '/api/blog/:blogId',
-  DELETE: '/api/blog/:blogId',
+  UPDATE: '/api/blog/:uuid',
+  DELETE: '/api/blog/:uuid',
   GET_USER_BLOGS: '/api/user/:userId/blogs',
   GET_USER_RECYCLE_BLOGS: '/api/user/:userId/recycle_blogs',
 }
@@ -23,16 +23,16 @@ export default {
     return request(URL.GET_USER_RECYCLE_BLOGS.replace(':userId', userId), 'GET', {page, tag})
   },
 
-  getBlogDetail({blogId}) {
-    return request(URL.GET_BLOG_DETAIL.replace(':blogId', blogId))
+  getBlogDetail({uuid}) {
+    return request(URL.GET_BLOG_DETAIL.replace(':uuid', uuid))
   },
 
-  updateBlog({blogId, title, content, description}) {
-    return request(URL.UPDATE.replace(':blogId', blogId), 'PUT', {title, content, description})
+  updateBlog({uuid, title, content, description, update_kind}) {
+    return request(URL.UPDATE.replace(':uuid', uuid), 'PUT', {title, content, description, update_kind})
   },
 
-  deleteBlog({blogId}) {
-    return request(URL.DELETE.replace(':blogId', blogId), 'DELETE')
+  deleteBlog({uuid}) {
+    return request(URL.DELETE.replace(':uuid', uuid), 'DELETE')
   },
 
   createBlog({title = '', content = '', description = '', user_id, tags, uuid, category_id, state}) {

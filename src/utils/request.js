@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {Message, MessageBox} from 'element-ui'
+// import {Message} from 'element-ui'
 import store from "../store"
 import Qs from 'qs'
 
@@ -38,44 +38,64 @@ service.interceptors.response.use(
      * code为非20000是抛错 可结合自己业务进行修改
      */
     const res = response.data
-    // console.log("res ",res)
-    if (res.code >= 30000) {
-      // console.log(res.msg)
-      Message({
-        message: res.msg,
-        type: 'error',
-        duration: 5 * 1000
-      })
-      // 50008:非法的token; 50012:其他客户端登录了;  50014:Token 过期了;
-      if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
-        MessageBox.confirm(
-          '你已被登出，可以取消继续留在该页面，或者重新登录',
-          '确定登出',
-          {
-            confirmButtonText: '重新登录',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }
-        ).then(() => {
-          // if (this.$router.currentRoute.name === 'newMerge') {
-          //   this.$router.replace({
-          //     name: 'login',
-          //     query: { redirect: this.$router.currentRoute.fullPath }
-          //   })
-          // }
-          store.dispatch('FedLogOut').then(() => {
-            location.reload() // 为了重新实例化vue-router对象 避免bug
-          })
-        })
-      }
-      return Promise.reject('error')
-    }
-    else {
-      return response.data
-    }
+    // if (!response.data.value && response.data.data.message === 'token invalid') {
+    //   // 刷新token
+    //   store.dispatch('refresh').then(response => {
+    //     sessionStorage.setItem('access_token', response.data)
+    //   }).catch(error => {
+    //     throw new Error('token刷新' + error)
+    //   })
+    // }
+    return res
+    // if (res.code >= 30000) {
+    //   Message({
+    //     message: res.msg,
+    //     type: 'error',
+    //     duration: 5 * 1000
+    //   })
+    //   // 50008:非法的token; 50012:其他客户端登录了;  50014:Token 过期了;
+    //   if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
+    //     MessageBox.confirm(
+    //       '你已被登出，可以取消继续留在该页面，或者重新登录',
+    //       '确定登出',
+    //       {
+    //         confirmButtonText: '重新登录',
+    //         cancelButtonText: '取消',
+    //         type: 'warning'
+    //       }
+    //     ).then(() => {
+    //       // if (this.$router.currentRoute.name === '') {
+    //       //   this.$router.replace({
+    //       //     name: 'login',
+    //       //     query: { redirect: this.$router.currentRoute.fullPath }
+    //       //   })
+    //       // }
+    //       store.dispatch('logout').then(() => {
+    //         location.reload() // 为了重新实例化vue-router对象 避免bug
+    //       })
+    //     })
+    //   }
+    //   return Promise.reject('error')
+    // }
+    // else {
+    //   return res
+    // }
   },
   error => {
-    return Promise.reject(error)
+    // let errorMap = {
+    //   400: '请求错误(400)',
+    //   401: '未授权，请重新登录(401)',
+    //   403: '拒绝访问(403)',
+    //   404: '请求出错(404)',
+    //   408: '请求超时(408)',
+    //   500: '服务器错误(500)',
+    //   501: '服务未实现(501)',
+    //   502: '网络错误(502)',
+    //   503: '服务不可用(503)',
+    //   504: '网络超时(504)',
+    //   505: 'HTTP版本不受支持(505)',
+    // }
+    return Promise.reject(error);
   }
 )
 

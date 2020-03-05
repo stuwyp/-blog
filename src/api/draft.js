@@ -36,7 +36,7 @@ export default {
     return request(URL.GET_DRAFT_DETAIL.replace(':uuid', uuid))
   },
 
-  updateDraft({uuid, title, content, description, origin, category_id, tags}) {
+  updateDraft({uuid, title, content, description, origin, category_id, tags, update_kind}) {
     return request(URL.UPDATE.replace(':uuid', uuid), 'PUT', {
       title,
       content,
@@ -44,7 +44,8 @@ export default {
       origin,
       category_id,
       tags: JSON.stringify(tags),
-      state: 0
+      state: 0,
+      update_kind
     })
   },
 
