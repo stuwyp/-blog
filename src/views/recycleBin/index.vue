@@ -1,6 +1,7 @@
 <template>
-  <div id="index">
-    <section id="left-blogs">
+  <div class="index">
+    <h3 class="title-text">回收站</h3>
+    <div v-if="blogs.length > 0">
       <div class="block">
         <el-timeline>
           <el-timeline-item
@@ -12,10 +13,12 @@
               <h3>{{blog.title}}</h3>
               <div>{{blog.description}}</div>
               <span v-if="blog.tags.length > 0">
-                <span  v-for="tag in blog.tags" :key="tag.id">{{tag.name}}</span>
+                <span v-for="tag in blog.tags" :key="tag.id">{{tag.name}}</span>
               </span>
-              <!--<el-button type="mini">恢复</el-button>-->
-              <!--<el-button type="mini">删除</el-button>-->
+              <div class="btn-group">
+                <el-button type="mini" @click="handleRestore(blog.uuid)">恢复</el-button>
+                <el-button type="mini" @click="handleDelete(blog.uuid)">删除</el-button>
+              </div>
             </el-card>
           </el-timeline-item>
         </el-timeline>
@@ -28,8 +31,9 @@
         :current-page="page"
         @current-change="onPageChange">
       </el-pagination>
+    </div>
+    <div v-else class="nothing">Nothing</div>
 
-    </section>
   </div>
 </template>
 
@@ -53,17 +57,23 @@ export default {
     ])
   },
   created() {
-    this.page = parseInt(this.$route.query.page) || 1
-    blog.getRecycleBlogsByUserId({userId: this.user.id, page: this.page, sortBy: this.sortBy}).then(res => {
-      // console.log(res)
-      this.blogs = res.data
-      this.total = res.total
-      this.page = res.page
-      this.pageCount = res.pageCount
-    })
-
+    this.loadData()
   },
   methods: {
+    loadData() {
+      this.page = parseInt(this.$route.query.page) || 1
+      blog.getRecycleBlogsByUserId({
+        userId: this.user.id,
+        page: this.page,
+        sortBy: this.sortBy
+      }).then(res => {
+        // console.log(res)
+        this.blogs = res.data
+        this.total = res.total
+        this.page = res.page
+        this.pageCount = res.pageCount
+      })
+    },
     onPageChange(newPage) {
       blog.getRecycleBlogsByUserId({userId: this.user.id, page: newPage}).then(res => {
         this.blogs = res.data
@@ -72,7 +82,14 @@ export default {
         this.$router.push({path: '/recycle_bin/', query: {page: newPage}})
       })
     },
-
+    async handleRestore(uuid) {
+      await blog.updateBlog({uuid, update_kind: 0})
+      this.loadData()
+    },
+    async handleDelete(uuid) {
+      await blog.deleteBlog({uuid})
+      this.loadData()
+    },
   }
 }
 
@@ -81,9 +98,22 @@ export default {
 <style scoped lang="less">
   @import "~@/assets/base.less";
 
-  #index {
-    margin: 20px 0;
+  .index {
+    height: 100%;
+    width: 60%;
+    margin: 32px 20% 20px;
+    background-color: white;
+    border: 1px solid #eee;
+    border-radius: 4px;
 
+    .title-text {
+      padding: 12px 8px;
+      margin: 0 20px;
+      border-bottom: 1px solid #eaeaea;
+    }
+    .nothing {
+      margin: 20px 30px;
+    }
     h3 {
       margin: 5px 0;
     }
@@ -92,45 +122,28 @@ export default {
       margin: 5px 0;
       font-size: 15px;
       color: @textLighterColor;
-
-      a {
-        color: @themeColor;
-        text-decoration: none;
-      }
     }
 
-    #left-blogs {
+    .el-timeline {
+      padding: 20px 20px 20px 36px;
 
-      margin: 0 16%;
-
-      .el-timeline {
-        padding-left: 20px;
-      }
-
-      .item {
-        background-color: #fff;
-        border-radius: 3px;
-        padding: 12px;
-        margin: 0 0 1px;
-        border: 1px solid #efefef;
-        border-bottom: 0;
-      }
-
-      .blog-sort {
-        background-color: #fff;
-        padding-right: 20px;
-        cursor: pointer;
-
-      }
-      .blog-item :hover {
+      .item :hover {
         background-color: #efefef;
       }
     }
-
+    .btn-group {
+      display: flex;
+      justify-content: flex-end;
+    }
+    .el-timeline {
+      padding-right: 42px;
+    }
   }
 
   .el-pagination .el-pager li,
   .el-pagination button {
     background-color: #fbfbfb !important;
   }
+
+
 </style>

@@ -11,7 +11,7 @@
       <section class="article" v-html="markdown"></section>
       <section class="comment-panel">
         <v-comments
-          :blogId="blogId"
+          :blogId="blog_id"
           :blogComments="blogComments"
           @update="updateComments"
           @changeCommentsPage="changeCommentsPage">
@@ -32,9 +32,11 @@ export default {
   components: {
     VComments
   },
+
   data() {
     return {
-      blogId: null,
+      blog_id: '',
+      uuid: '',
       title: '',
       rawContent: '',
       user: {},
@@ -44,17 +46,21 @@ export default {
   },
 
   created() {
-    this.blogId = this.$route.params.blogId
-    blog.getBlogDetail({blogId: this.blogId}).then(res => {
+    this.uuid = this.$route.params.uuid
+    blog.getBlogDetail({uuid: this.uuid}).then(res => {
       this.title = res.data.title
       this.rawContent = res.data.content
       this.createdAt = res.data.created_at
       this.user = res.data.user
+      this.blog_id = res.data.id
+
+      comment.getCommentsByBlogId({
+        blogId: this.blog_id
+      }).then(res => {
+        this.blogComments = res.data
+      })
     })
 
-    comment.getCommentsByBlogId({blogId: this.blogId}).then(res => {
-      this.blogComments = res.data
-    })
 
   },
 
@@ -67,16 +73,15 @@ export default {
   methods: {
     async updateComments() {
       const res = await comment.getCommentsByBlogId({
-        blogId: this.blogId
+        blogId: this.blog_id
       })
       this.blogComments = res.data
     },
 
-
     // 切换评论页面
     async changeCommentsPage(page) {
       const res = await comment.getCommentsByBlogId({
-        blogId: this.blogId,
+        blogId: this.blog_id,
         page: page
       });
       this.blogComments = res.data;
@@ -137,7 +142,7 @@ export default {
         }
       }
 
-      .comment-panel{
+      .comment-panel {
         padding: 10px;
       }
 
